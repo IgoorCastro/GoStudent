@@ -37,7 +37,7 @@ app.post("/register", (req, res) => {
 // Função para retornar os dados de uma determinada data, caso ela exista
 app.get("/getDateData", (req, res) => {
     const { date } = req.query;
-    console.log("Data db: " + date);
+    //console.log("Data db: " + date);
 
     let SQL = "SELECT * FROM agendaaluno WHERE eve_dataHora = ?";
     db.query(SQL, [date], (err, result) => {
@@ -46,6 +46,25 @@ app.get("/getDateData", (req, res) => {
         else
             res.send(result);
     });
+});
+
+app.get("/getDateTaskWeekly", (req, res) => {
+    const { date } = req.query;
+    const { lastDate } = req.query;
+
+    console.log("date: ", date);
+    console.log("lastDate", lastDate);
+
+    let SQL = "SELECT * FROM agendaaluno WHERE eve_dataHora BETWEEN ? AND ?";
+    db.query(SQL, [date, lastDate], (err, result) => {
+        if (err)
+            console.log(err);
+        else {
+            res.send(result);
+            console.log(result);
+        }
+    });
+
 });
 
 // Porta que o servidor ira ouvir

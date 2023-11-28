@@ -7,9 +7,9 @@ import { faTrash, faTurnUp, faPen, faChevronLeft, faChevronRight } from '@fortaw
 import Input from '../Input';
 import Button from '../Button';
 
-const AddTask = () => {
+const TaskInfo = () => {
     // Pegando useCalendarContext do contexto
-    const { dataSelecionada, closeTaskInfo, showWeeklyTask, listDataSelecionada, setListData } = useCalendarContext();
+    const { dataSelecionada, closeTaskInfo, showWeeklyTask, listDataSelecionada, setListData, showTaskEdit } = useCalendarContext();
 
     // State para guardar as informações das input
     const [values, setValues] = useState();
@@ -26,7 +26,7 @@ const AddTask = () => {
     }
 
     const convertDate = (date) => {
-        console.log("E-convertDate: " + date);
+        //console.log("E-convertDate: " + date);
 
         const data = new Date(date.substring(0, 10));
 
@@ -37,13 +37,13 @@ const AddTask = () => {
         // Formatar para o padrão dd/mm/yyyy
         const dataString = `${dia}/${mes}/${ano}`;
 
-        console.log("convertDate: " + dataString);
+        //console.log("convertDate: " + dataString);
         return dataString;
     }
 
     var dataString = null, titleString = null, disciplinaString = null, tipoString = null, observacaoString = null;
-
-    if (listDataSelecionada && listDataSelecionada.length > 0) {
+    console.log(listDataSelecionada.length);
+    if (listDataSelecionada && listDataSelecionada.length > 1) {
         //console.log("TaskInfo: ", listDataSelecionada);
         dataString = convertDate(listDataSelecionada[currentIndex].eve_dataHora);
 
@@ -54,18 +54,28 @@ const AddTask = () => {
         tipoString = listDataSelecionada[currentIndex].cat_id;
 
         observacaoString = listDataSelecionada[currentIndex].eve_descricao;
+    } else {
+        dataString = convertDate(listDataSelecionada[0].eve_dataHora);
+
+        titleString = listDataSelecionada[0].eve_titulo;
+
+        disciplinaString = listDataSelecionada[0].dis_id;
+
+        tipoString = listDataSelecionada[0].cat_id;
+
+        observacaoString = listDataSelecionada[0].eve_descricao;
     }
 
     const handleNext = () => {
-        console.log("currentIndex: ", currentIndex);
-        console.log("listDataSelecionada.length: ", listDataSelecionada.length - 1);
+        //console.log("currentIndex: ", currentIndex);
+        //console.log("listDataSelecionada.length: ", listDataSelecionada.length - 1);
         if (currentIndex < listDataSelecionada.length - 1)
             setCurrentIndex(currentIndex + 1);
     }
 
     const handlePrevious = () => {
-        console.log("currentIndex: ", currentIndex);
-        console.log("listDataSelecionada.length: ", listDataSelecionada.length - 1);
+        //console.log("currentIndex: ", currentIndex);
+        //console.log("listDataSelecionada.length: ", listDataSelecionada.length - 1);
         if (currentIndex > 0)
             setCurrentIndex(currentIndex - 1);
     }
@@ -77,9 +87,13 @@ const AddTask = () => {
         closeTaskInfo();
     }
 
+    const handleEditDate = () => {
+        showTaskEdit();
+    }
+
     // ---------- LOG -----------
     //console.log("Data selecionada: ", dataString);
-    console.log("Data selecionada {dataConvert}: ", convertDate(listDataSelecionada[0].eve_dataHora));
+    //console.log("Data selecionada {dataConvert}: ", convertDate(listDataSelecionada[0].eve_dataHora));
 
     return (
         <C.AddContainer>
@@ -94,7 +108,7 @@ const AddTask = () => {
                             <FontAwesomeIcon icon={faTurnUp} rotation={270} onClick={() => { handleClickExit() }} />
                         </C.IconsContent>
                         <C.IconsContent>
-                            <FontAwesomeIcon icon={faPen} />
+                            <FontAwesomeIcon icon={faPen} onClick={() => handleEditDate()} />
                         </C.IconsContent>
                     </C.TopIconsContent>
                     <C.TopAddContent>
@@ -132,4 +146,4 @@ const AddTask = () => {
     )
 }
 
-export default AddTask
+export default TaskInfo

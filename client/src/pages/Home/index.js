@@ -6,6 +6,7 @@ import { faUser, faCalendarDays, faWallet, faClock } from '@fortawesome/free-sol
 import AddTask from '../../components/TaskAdd';
 import TaskInfo from '../../components/TaskInfo';
 import TaskWeekly from '../../components/TaskWeekly';
+import TaskEdit from '../../components/TaskEdit';
 import { useCalendarContext } from '../../context/DataContext';
 
 const Home = () => {
@@ -13,7 +14,7 @@ const Home = () => {
     const [selectedIcon, setSelectedIcon] = useState(false);
 
     // Contexto para controle da renderização do component 'AddTask'
-    const { showAddTask, isTaskInfoVisible, isTaskAddVisible, isTaskWeeklyVisible } = useCalendarContext();
+    const { showAddTask, isTaskInfoVisible, isTaskAddVisible, isTaskWeeklyVisible, isTaskEditVisible } = useCalendarContext();
 
     const toogleCalendarIcon = () => {
         setSelectedIcon(!selectedIcon);
@@ -65,6 +66,7 @@ const Home = () => {
                 <C.DateInfoContent>
                     {isTaskWeeklyVisible && (<TaskWeekly />)}
                     {isTaskInfoVisible && (<TaskInfo />)}
+                    {isTaskEditVisible && (<TaskEdit />)}
                     {isTaskAddVisible && (<AddTask />)}
                 </C.DateInfoContent>
 

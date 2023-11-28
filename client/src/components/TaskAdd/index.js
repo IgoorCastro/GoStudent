@@ -53,7 +53,7 @@ const AddTask = () => {
     }
 
     const convertDate = (date) => {
-        console.log("E-convertDate: " + date);
+        //console.log("E-convertDate: " + date);
 
         const data = new Date(date.substring(0, 10));
 
@@ -64,7 +64,7 @@ const AddTask = () => {
         // Formatar para o padrão dd/mm/yyyy
         const dataString = `${dia}/${mes}/${ano}`;
 
-        console.log("convertDate: " + dataString);
+        //console.log("convertDate: " + dataString);
         return dataString;
     }
 
@@ -84,7 +84,11 @@ const AddTask = () => {
     }
     else {
         // Formatar para o padrão dd/mm/yyyy
-        dataString = dataSelecionada;
+        let parts = dataSelecionada.split('/'); // Dividindo a string nos separadores '/'
+
+        // Rearranjando as partes para formar a nova string invertida
+        let invertedDate = parts[2] + '/' + parts[1] + '/' + parts[0];
+        dataString = invertedDate;
     }
 
 

@@ -4,8 +4,10 @@ import Axios from 'axios';
 import { useCalendarContext } from '../../context/DataContext';
 
 const Calendario = () => {
-    const { showTaskInfo, listDataSelecionada, setListData, setData } = useCalendarContext();
+    const { showTaskInfo, listDataSelecionada, setListData, setData, dataSelecionada } = useCalendarContext();
     setListData({});
+    // console.log("listDataSelecionada: ", listDataSelecionada);
+    // console.log("dataSelecionada: ", dataSelecionada);
     // --------------------------------- States ---------------------------------
 
     // Pega o dia/ mês atual do sistema
@@ -57,8 +59,9 @@ const Calendario = () => {
 
     // Função para lidar com a seleção de um dia
     const handleSelecionarDia = (dia, mes, ano) => {
+        //console.log("handleSelecionarDia: ", ano + "/" + mes + "/" + dia);
         setSelectDate({ dia, mes, ano });
-        setData(dia + "/" + mes + "/" + ano);
+        setData(ano + "/" + mes + "/" + dia);
         //console.log("selectDate: ", selectDate);
 
         Axios.get("http://localhost:3001/getDateData", {

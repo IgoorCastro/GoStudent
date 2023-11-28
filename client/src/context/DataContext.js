@@ -16,6 +16,7 @@ export const DataProvider = ({ children }) => {
     const [isTaskInfoVisible, setIsTaskInfoVisible] = useState(false);
     const [isTaskAddVisible, setIsTaskAddVisible] = useState(false);
     const [isTaskWeeklyVisible, setIsTaskWeeklVisible] = useState(true);
+    const [isTaskEditVisible, setIsTaskEditVisible] = useState(null);
 
     const setListData = (listData) => {
         // Caso a lista esteja vazia, setar apenas a data selecionada
@@ -29,10 +30,23 @@ export const DataProvider = ({ children }) => {
         //console.log("(context 'setData': ", dataSelecionada);
     }
 
+    const showTaskEdit = () => {
+        setIsTaskInfoVisible(false);
+        setIsTaskAddVisible(false);
+        setIsTaskWeeklVisible(false);
+        setIsTaskEditVisible(true); // Mostrar o componente quando selecionado o icone de edição
+    }
+
+    const closeTaskEdit = () => {
+        setIsTaskEditVisible(false);
+        setIsTaskWeeklVisible(true);
+    }
+
     const showTaskInfo = () => {
         setIsTaskInfoVisible(true); // Mostrar o componente quando a data for selecionada
         setIsTaskAddVisible(false);
         setIsTaskWeeklVisible(false);
+        setIsTaskEditVisible(false);
     }
 
     const closeTaskInfo = () => {
@@ -45,6 +59,7 @@ export const DataProvider = ({ children }) => {
         setIsTaskInfoVisible(false); // Fecha o component 'TaskInfo'
         setIsTaskAddVisible(true); // Mostra o component 'TaskAdd'
         setIsTaskWeeklVisible(false);
+        setIsTaskEditVisible(false);
     }
 
     const closeTaskAdd = () => {
@@ -56,6 +71,7 @@ export const DataProvider = ({ children }) => {
         setIsTaskWeeklVisible(true);
         setIsTaskInfoVisible(false);
         setIsTaskAddVisible(false);
+        setIsTaskEditVisible(false);
     }
 
     const closeTaskWeekly = () => {
@@ -67,7 +83,11 @@ export const DataProvider = ({ children }) => {
     };
 
     return (
-        <DataContext.Provider value={{ listDataSelecionada, setListData, dataSelecionada, setData, isTaskInfoVisible, toggleComponentVisibility, isTaskAddVisible, showAddTask, showTaskInfo, closeTaskInfo, closeTaskAdd, isTaskWeeklyVisible, showWeeklyTask, closeTaskWeekly }}>
+        <DataContext.Provider value={{
+            listDataSelecionada, setListData, dataSelecionada, setData, isTaskInfoVisible, toggleComponentVisibility,
+            isTaskAddVisible, showAddTask, showTaskInfo, closeTaskInfo, closeTaskAdd, isTaskWeeklyVisible, showWeeklyTask, closeTaskWeekly,
+            isTaskEditVisible, showTaskEdit, closeTaskEdit
+        }}>
             {children}
         </DataContext.Provider>
     );
