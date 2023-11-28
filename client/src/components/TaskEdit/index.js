@@ -10,14 +10,16 @@ import Button from '../Button';
 const TaskEdit = () => {
     // Pegando useDataContext do contexto
     const { isTaskEditVisible, listDataSelecionada, closeTaskEdit, dataSelecionada } = useCalendarContext();
+    console.log("Context - listDataSelecionada: ", listDataSelecionada);
 
     // State para guardar as informações das input
     const [values, setValues] = useState({
-        dataString: '',
-        titleString: '',
-        disciplinaString: '',
-        tipoString: '',
-        observacaoString: '',
+        id: listDataSelecionada[0].eve_id,
+        dataString: listDataSelecionada[0].eve_dataHora,
+        titleString: listDataSelecionada[0].eve_titulo,
+        disciplinaString: listDataSelecionada[0].dis_id,
+        tipoString: listDataSelecionada[0].cat_id,
+        observacaoString: listDataSelecionada[0].eve_descricao,
         // outros campos do formulário aqui
     });
     const [lastListDataSelecionada, setLastListDataSelecionada] = useState();
@@ -34,23 +36,23 @@ const TaskEdit = () => {
     const handleClickButton = () => {
         // Formatação da data para o DB
         if (listDataSelecionada) {
-            const dataHora = new Date(listDataSelecionada[0].eve_dataHora);
-            // Convertendo a string para um objeto Date
-            // Extraindo apenas a parte da data
-            const newData = new Date(dataHora.getFullYear(), dataHora.getMonth(), dataHora.getDate());
+            const fragmentDate = values.dataString.split('/');
+            const dateToDb = fragmentDate[2] + '/' + fragmentDate[1] + '/' + fragmentDate[0];;
 
-            const dia = newData.getDate();
-            const mes = newData.getMonth() + 1;
-            const ano = newData.getFullYear();
-
-            var data = `${ano}/${mes}/${dia}`;
+            Axios.put("http://localhost:3001/edit", {
+                data: dateToDb,
+                titulo: values.titleString,
+                disciplina: values.disciplinaString,
+                tipo: values.tipoString,
+                observacao: values.observacaoString,
+                id: values.id,
+            });
+            alert("Alteração concluida");
+            closeTaskEdit();
         }
         else
             var data = dataSelecionada;
         console.log("Data: ", data);
-
-
-        //console.log(values);
     }
 
     const convertDate = (date) => {
@@ -73,6 +75,7 @@ const TaskEdit = () => {
         setLastListDataSelecionada(listDataSelecionada[0].eve_dataHora);
         if (Array.isArray(listDataSelecionada) && isTaskEditVisible) {
             setValues({
+                id: listDataSelecionada[0].eve_id,
                 dataString: convertDate(listDataSelecionada[0].eve_dataHora),
                 titleString: listDataSelecionada[0].eve_titulo,
                 disciplinaString: listDataSelecionada[0].dis_id,
@@ -86,8 +89,9 @@ const TaskEdit = () => {
 
     useEffect(() => { updateDateData() }, []);
 
-    if (lastListDataSelecionada !== listDataSelecionada[0].eve_dataHora)
+    if (lastListDataSelecionada !== listDataSelecionada[0].eve_dataHora) {
         updateDateData();
+    }
 
 
 
@@ -126,19 +130,19 @@ const TaskEdit = () => {
                     <C.AuxDiv>
                         <C.Label>título:</C.Label>
                     </C.AuxDiv>
-                    <Input type='text' bg='#fff' name='titulo' onChange={handleChangeValues} defaultValue={values.titleString} ></Input>
+                    <Input type='text' bg='#fff' name='titleString' onChange={handleChangeValues} defaultValue={values.titleString} ></Input>
                 </C.InputContent>
                 <C.InputContent>
                     <C.AuxDiv>
                         <C.Label>disciplina:</C.Label>
                     </C.AuxDiv>
-                    <Input type='text' bg='#fff' name='disciplina' onChange={handleChangeValues} defaultValue={values.disciplinaString} ></Input>
+                    <Input type='text' bg='#fff' name='disciplinaString' onChange={handleChangeValues} defaultValue={values.disciplinaString} ></Input>
                 </C.InputContent>
                 <C.InputContent>
                     <C.AuxDiv>
                         <C.Label>tipo:</C.Label>
                     </C.AuxDiv>
-                    <C.Select name='tipo' onChange={handleChangeValues} value={values.tipoString}>
+                    <C.Select name='tipoString' onChange={handleChangeValues} value={values.tipoString}>
                         <C.Option value='atividade' >1</C.Option>
                         <C.Option value='avaliação'>2</C.Option>
                         <C.Option value='trabalho'>3</C.Option>
@@ -148,13 +152,13 @@ const TaskEdit = () => {
                     <C.AuxDiv>
                         <C.Label>data:</C.Label>
                     </C.AuxDiv>
-                    <Input type='text' bg='#fff' name='data' onChange={handleChangeValues} defaultValue={values.dataString}></Input>
+                    <Input type='text' bg='#fff' name='dataString' value={values.dataString}></Input>
                 </C.InputContent>
                 <C.InputContent>
                     <C.AuxDiv>
                         <C.Label>observação:</C.Label>
                     </C.AuxDiv>
-                    <Input type='text' bg='#fff' name='observacao' onChange={handleChangeValues} defaultValue={values.observacaoString} ></Input>
+                    <Input type='text' bg='#fff' name='observacaoString' onChange={handleChangeValues} defaultValue={values.observacaoString} ></Input>
                 </C.InputContent>
                 <Button text='SALVAR' onClick={() => handleClickButton()}></Button>
             </C.MainAddCointainer>

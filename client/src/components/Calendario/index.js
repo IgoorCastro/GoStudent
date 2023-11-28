@@ -70,10 +70,8 @@ const Calendario = () => {
             }
         }).then((response) => {
             setListData(response.data);
-
             //console.log("response: ", response);
         });
-
     };
 
     const helpRequest = () => {

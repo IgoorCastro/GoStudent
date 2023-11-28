@@ -10,6 +10,7 @@ import Button from '../Button';
 const TaskInfo = () => {
     // Pegando useCalendarContext do contexto
     const { dataSelecionada, closeTaskInfo, showWeeklyTask, listDataSelecionada, setListData, showTaskEdit } = useCalendarContext();
+    console.log("listDataSelecionada: ", listDataSelecionada);
 
     // State para guardar as informações das input
     const [values, setValues] = useState();
@@ -28,9 +29,9 @@ const TaskInfo = () => {
     const convertDate = (date) => {
         //console.log("E-convertDate: " + date);
 
-        const data = new Date(date.substring(0, 10));
+        const data = new Date(date);
 
-        const dia = data.getDate() + 1; // Obter o ano como dia
+        const dia = data.getDate(); // Obter o ano como dia
         const mes = data.getMonth() + 1; // Mês (lembrando que Janeiro começa do zero)
         const ano = data.getFullYear(); // Obter o dia como ano
 
@@ -91,13 +92,21 @@ const TaskInfo = () => {
         showTaskEdit();
     }
 
+    const handleDeletButton = () => {
+        console.log("ID: ", listDataSelecionada[0].eve_id);
+        Axios.delete(`http://localhost:3001/delete/${listDataSelecionada[0].eve_id}`);
+        alert("Registro deletado");
+        closeTaskInfo();
+    }
+
     // ---------- LOG -----------
-    //console.log("Data selecionada: ", dataString);
-    //console.log("Data selecionada {dataConvert}: ", convertDate(listDataSelecionada[0].eve_dataHora));
+    console.log("listDataSelecionada.length > 1: ", listDataSelecionada.length > 1);
+    console.log("convertDate(listDataSelecionada[0].eve_dataHora: ", convertDate(listDataSelecionada[0].eve_dataHora));
+    console.log("dataSelecionada: ",);
 
     return (
         <C.AddContainer>
-            {listDataSelecionada.length > 1 && convertDate(listDataSelecionada[0].eve_dataHora) === dataSelecionada && (
+            {listDataSelecionada.length > 1 && convertDate(listDataSelecionada[0].eve_dataHora) === convertDate(dataSelecionada) && (
                 <C.ButtonContainer onClick={() => handlePrevious()}>
                     <FontAwesomeIcon icon={faChevronLeft} />
                 </C.ButtonContainer>)}
@@ -133,10 +142,10 @@ const TaskInfo = () => {
                     <C.Label>{observacaoString}</C.Label>
                 </C.LabelContent>
                 <C.IconsContent>
-                    <FontAwesomeIcon icon={faTrash} />
+                    <FontAwesomeIcon icon={faTrash} onClick={handleDeletButton} />
                 </C.IconsContent>
             </C.MainAddCointainer>
-            {listDataSelecionada.length > 1 && convertDate(listDataSelecionada[0].eve_dataHora) === dataSelecionada && (
+            {listDataSelecionada.length > 1 && convertDate(listDataSelecionada[0].eve_dataHora) === convertDate(dataSelecionada) && (
                 <C.ButtonContainer onClick={() => { handleNext() }}>
                     <FontAwesomeIcon icon={faChevronRight} />
                 </C.ButtonContainer>)}

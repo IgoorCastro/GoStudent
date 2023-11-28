@@ -10,6 +10,7 @@ import Button from '../Button';
 const AddTask = () => {
     // Pegando useDataContext do contexto
     const { isTaskAddVisible, listDataSelecionada, closeTaskAdd, dataSelecionada } = useCalendarContext();
+    console.log(listDataSelecionada);
 
     // State para guardar as informações das input
     const [values, setValues] = useState();
@@ -24,20 +25,11 @@ const AddTask = () => {
 
     const handleClickButton = () => {
         // Formatação da data para o DB
-        if (listDataSelecionada) {
-            const dataHora = new Date(listDataSelecionada[0].eve_dataHora);
-            // Convertendo a string para um objeto Date
-            // Extraindo apenas a parte da data
-            const newData = new Date(dataHora.getFullYear(), dataHora.getMonth(), dataHora.getDate());
-
-            const dia = newData.getDate();
-            const mes = newData.getMonth() + 1;
-            const ano = newData.getFullYear();
-
-            var data = `${ano}/${mes}/${dia}`;
-        }
-        else
+        if (dataSelecionada) {
             var data = dataSelecionada;
+        }
+
+
         console.log("Data: ", data);
 
         Axios.post("http://localhost:3001/register", {
@@ -50,6 +42,9 @@ const AddTask = () => {
             console.log(response);
         });
         //console.log(values);
+
+        alert("Registro concluido");
+        closeTaskAdd();
     }
 
     const convertDate = (date) => {
@@ -73,7 +68,6 @@ const AddTask = () => {
     // console.log("if-TaskAdd: ", listDataSelecionada[0].eve_dataHora);
     if (listDataSelecionada && convertDate(listDataSelecionada[0].eve_dataHora) === dataSelecionada) {
         const data = new Date(listDataSelecionada[0].eve_dataHora);
-
 
         const dia = data.getDate(); // Obter o ano como dia
         const mes = data.getMonth() + 1; // Mês (lembrando que Janeiro começa do zero)

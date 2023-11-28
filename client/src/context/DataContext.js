@@ -13,6 +13,7 @@ export const useCalendarContext = () => {
 export const DataProvider = ({ children }) => {
     const [listDataSelecionada, setListDataSelecionada] = useState(null);
     const [dataSelecionada, setDataSelecionada] = useState(null);
+
     const [isTaskInfoVisible, setIsTaskInfoVisible] = useState(false);
     const [isTaskAddVisible, setIsTaskAddVisible] = useState(false);
     const [isTaskWeeklyVisible, setIsTaskWeeklVisible] = useState(true);

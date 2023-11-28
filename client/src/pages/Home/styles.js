@@ -151,14 +151,6 @@ export const DateInfoContent = styled.div`
     //border: 1px solid blue;
 `;
 
-export const Label = styled.label`
-    font-size: 0.9rem;
-    padding: 0;
-    margin: 0;
-
-    text-transform: uppercase;
-`;
-
 export const AddTaskContent = styled.div`
     height: 10%;
 
@@ -174,11 +166,19 @@ export const MessageContent = styled.div`
     height: 12%;
 
     display: flex;
+    flex-direction: column;
     justify-content: center;
-    align-items: center;
-    
+    align-items: center;    
 
     //border: 1px solid red;
+`;
+
+export const Label = styled.label`
+    font-size: 1.2rem;
+
+    margin-top: 1%;
+
+    //text-transform: uppercase;
 `;
 
 export const Title = styled.h2`
@@ -189,8 +189,7 @@ export const Title = styled.h2`
     //border: 1px solid blue;
 
     height: min-content;
-    text-align: center;
-    
+    text-align: center;    
 `;
 
 export const Button = styled.a`

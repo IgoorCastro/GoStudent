@@ -5,7 +5,7 @@ export const WeeklyContainer = styled.div`
     height: 100%;
 
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
 
@@ -26,15 +26,61 @@ export const ButtonContainer = styled.div`
 `;
 
 export const MainContainer = styled.div`
-    width: 88%;
-    height: 100%;
+    width: 87%;
+    height: 96%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+
+    //gap: 1px;
+
+    //padding: 20px 0;
+    //padding-bottom: 10px;
+
+    //border: 1px solid blue;
+`;
+
+export const TopAddContainer = styled.div`
+    width: 100%;
+    height: 25%;
+    //border-radius: 15px;
+    text-align: center;
 
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    
+    //padding: 20px 0;
 
+    //background: #FB6E66;
+
+    //border: 1px solid red;
+`;
+
+export const TopAddContent = styled.div`
+    width: 90%;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+
+    //border: 1px solid red;
+`;
+
+export const Title = styled.h2`
+    font-size: 22px;
+    text-transform: uppercase;
+
+    ${({ color }) => color && `color: ${color};`}
     //border: 1px solid blue;
+
+    height: min-content;
+    text-align: center;
+    
+    color: black;
 `;
 
 export const LabelContent = styled.div`
@@ -48,6 +94,8 @@ export const LabelContent = styled.div`
     border-radius: 0.3rem;
 
     background: #a9a9a9;
+
+    margin-top: 5%;
 
     //border: 1px solid red;
 `;

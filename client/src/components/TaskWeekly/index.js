@@ -54,10 +54,14 @@ const TaskWeekly = () => {
         }
     }, []);
 
-
-
     return (
         <C.WeeklyContainer>
+            <C.TopAddContainer>
+                <C.TopAddContent>
+                    <C.Title color='#fff'>Resumo da seamana</C.Title>
+                </C.TopAddContent>
+            </C.TopAddContainer>
+
             <C.MainContainer>
                 {weeklyList.length > 0 && (
                     weeklyList.map((item, index) => (

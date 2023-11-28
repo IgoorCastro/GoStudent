@@ -59,7 +59,10 @@ const Home = () => {
                     <Calendario />
                     <C.MessageContent>
                         <C.Label>
-                            Texto aqui
+                            Bem vindo de volta aluno
+                        </C.Label>
+                        <C.Label>
+                            Mantenha seu calendario sempre atualizado
                         </C.Label>
                     </C.MessageContent>
                 </C.CalendarContent>

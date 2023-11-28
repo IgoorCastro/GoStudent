@@ -55,7 +55,7 @@ app.get("/getDateTaskWeekly", (req, res) => {
     console.log("date: ", date);
     console.log("lastDate", lastDate);
 
-    let SQL = "SELECT * FROM agendaaluno WHERE eve_dataHora BETWEEN ? AND ?";
+    let SQL = "SELECT * FROM agendaaluno WHERE eve_dataHora BETWEEN ? AND ? ORDER BY eve_dataHora ASC";
     db.query(SQL, [date, lastDate], (err, result) => {
         if (err)
             console.log(err);
@@ -65,6 +65,37 @@ app.get("/getDateTaskWeekly", (req, res) => {
         }
     });
 
+});
+
+app.put("/edit", (req, res) => {
+    const { titulo } = req.body;
+    const { disciplina } = req.body;
+    const { tipo } = req.body;
+    const { data } = req.body;
+    const { observacao } = req.body;
+    const { id } = req.body;
+
+    console.log("Edit ID: ", id);
+
+    let SQL = "UPDATE agendaaluno SET dis_id = ?, cat_id = ?, eve_titulo = ?, eve_descricao = ?, eve_dataHora = ? WHERE eve_id = ?";
+    db.query(SQL, [disciplina, tipo, titulo, observacao, data, id], (err, result) => {
+        if (err)
+            console.log(err);
+        else
+            res.send(result);
+    });
+});
+
+app.delete("/delete/:eve_id", (req, res) => {
+    const { eve_id } = req.params;
+
+    let SQL = "DELETE FROM agendaaluno WHERE eve_id = ?";
+    db.query(SQL, [eve_id], (err, resul) => {
+        if (err)
+            console.log(err);
+        else
+            res.send(resul);
+    });
 });
 
 // Porta que o servidor ira ouvir
