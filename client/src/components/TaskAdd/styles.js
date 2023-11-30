@@ -121,10 +121,17 @@ export const Option = styled.option`
 `;
 
 export const Select = styled.select`
-    width: 90%;
-    padding: 8px 3px;
+    outline: none;
+    width: 93%;
 
+    border-radius: 2px;
     border: none;
+
+    font-size: 1rem;
+    padding: 8px 7px;
+    text-align: start;
+
+    //border: 1px solid red;
 `;
 
 export const DefaultA = styled.a`

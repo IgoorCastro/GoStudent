@@ -4,8 +4,7 @@ import { useCalendarContext } from '../../context/DataContext';
 import Axios from "axios";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faTurnUp, faPen, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
-import Input from '../Input';
-import Button from '../Button';
+import Title from '../../components/Title';
 
 const TaskInfo = () => {
     // Pegando useCalendarContext do contexto
@@ -120,7 +119,7 @@ const TaskInfo = () => {
                     </C.TopIconsContent>
                     <C.TopAddContent>
                         <C.DefaultA onClick={null}></C.DefaultA>
-                        <C.Title color='#fff'>Resumo da data</C.Title>
+                        <Title>Resumo da data</Title>
                         <C.DefaultA onClick={null}></C.DefaultA>
                     </C.TopAddContent>
                 </C.TopAddContainer>

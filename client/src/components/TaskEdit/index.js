@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell, faTurnUp } from '@fortawesome/free-solid-svg-icons';
 import Input from '../Input';
 import Button from '../Button';
+import Title from '../../components/Title';
 
 const TaskEdit = () => {
     // Pegando useDataContext do contexto
@@ -121,7 +122,7 @@ const TaskEdit = () => {
                 </C.TopIconsContent>
                 <C.TopAddContent>
                     <C.DefaultA onClick={null}></C.DefaultA>
-                    <C.Title color='#fff'>EDITAR</C.Title>
+                    <Title>EDITAR</Title>
                     <C.DefaultA onClick={null}></C.DefaultA>
                 </C.TopAddContent>
             </C.TopAddContainer>
