@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import * as C from './styles';
 import Axios from 'axios';
 import { useCalendarContext } from '../../context/DataContext';
+import Title from '../Title';
 
 const Calendario = () => {
     const { showTaskInfo, listDataSelecionada, setListData, setData, dataSelecionada } = useCalendarContext();
@@ -14,6 +15,8 @@ const Calendario = () => {
     const [mesAtual, setMesAtual] = useState(new Date().getMonth() + 1);
     const [anoAtual, setAnoAtual] = useState(new Date().getFullYear());
     const [selectDate, setSelectDate] = useState(null);
+    const [colorControl, setColorControl] = useState({});
+    const [updateCalendar, setUpdateCalendar] = useState(null);
 
     // --------------------------------- Variaveis estaticas de controle ---------------------------------
     // Cores de selação da data
@@ -72,6 +75,7 @@ const Calendario = () => {
             setListData(response.data);
             //console.log("response: ", response);
         });
+
     };
 
     const helpRequest = () => {
@@ -121,34 +125,69 @@ const Calendario = () => {
         return dias;
     };
 
-    // Função para controlar as cores do calendario dependendo de quantas atividades há no dia
-    const colorControl = (dia, mes, ano) => {
-        let dataTest = '11/10/2023'; // Data deve ter 2 registros
+    const getCalendarColorControl = () => {
+        Axios.get("http://localhost:3001/testData", {
+        }).then((response) => {
+            setColorControl(response.data);
+        });
+
+    }
+
+    useEffect(() => {
+        // // Verificar se a data que está chegando no parametro está cadastrada no banco
+        // // Data sendo escrita no calendario e para pesquisa no db
+        // let data = null;
+        console.log("Effect");
+        // if(dia)
+        //     data = ano + '/' + mes + '/' + dia;
+        getCalendarColorControl();
+        //alert("EFFECT");
+
+
+        //const listLenght = listData.length;
+
+        let dataTest = '30/11/2023'; // Data deve ter 2 registros
         let testRegistros = 2; // Valor de teste reprensentando a quantidade de registros da 'data' no Db
 
-        // Data sendo escrita no calendario e para pesquisa no db
-        let data = dia + '/' + mes + '/' + ano;
-
         // Verifica se há algum registro no Db
-        let registros = data === dataTest ? testRegistros : null;
+        //let registros = data === dataTest ? testRegistros : null;
 
-        // Checar no banco se há registros nesse dia
-        if (registros) {
-            let colorControl = 'rgb(242, 41, 59';
-            switch (registros) {
-                case 1:
-                    return { background: colorControl + ', 0.4' };
-                case 2:
-                    return { background: colorControl + ', 0.6' };
-                case 3:
-                    return { background: colorControl + ', 0.7' };
-                case 4:
-                    return { background: colorControl + ', 0.9' };
-                default:
-                    return { background: '#f9f9f9' };
+    }, [updateCalendar]);
+
+    const calendarColorControl = (dia, mes, ano) => {
+        let repeatedDaysCount = 0;
+        const dataAtual = dia ? dia + "/" + mes + "/" + ano : null;
+
+        // Verificar se se colorControl recebeu retorno do banco e seu length é > 0
+        if (colorControl.length > 0 && dataAtual) {
+            let updatedColorControl = [...colorControl]; // Cria uma cópia do estado colorControl
+
+            // Laço para ver quantas vezes a data se repete no retorno do banco
+            for (let i = 0; i <= updatedColorControl.length - 1; i++) {
+                if (convertDate(updatedColorControl[i].eve_dataHora) === dataAtual) {
+                    console.log("true");
+                    repeatedDaysCount++;
+                    updatedColorControl.splice(i, 1);
+                    i--;
+                }
             }
         }
-    };
+        let color = 'rgb(242, 41, 59';
+        switch (repeatedDaysCount) {
+            case 1:
+                return { background: color + ', 0.3)' };
+            case 2:
+                return { background: color + ', 0.5)' };
+            case 3:
+                return { background: color + ', 0.6)' };
+            case 4:
+                return { background: color + ', 0.7)' };
+            default:
+                return {};
+        }
+
+    }
+
 
     const convertDate = (date) => {
         let data = "";
@@ -167,8 +206,20 @@ const Calendario = () => {
         // Formatar para o padrão dd/mm/yyyy
         const dataString = `${dia}/${mes}/${ano}`;
 
-        console.log("convertDate: " + dataString);
+        //console.log("convertDate: " + dataString);
         return dataString;
+    }
+
+    const handlePreviousMonth = () => {
+        mesAnterior();
+        setUpdateCalendar(prevState => prevState + 1);
+        // getCalendarColorControl();        
+    }
+
+    const handleNextMonth = () => {
+        proximoMes();
+        setUpdateCalendar(prevState => prevState + 1);
+        // getCalendarColorControl();
     }
 
 
@@ -177,9 +228,9 @@ const Calendario = () => {
         <C.MainContent>
             <C.CalendarioContainer>
                 <C.TitleContent>
-                    <C.Button position='left' onClick={mesAnterior}>&lt;</C.Button>
-                    <C.Title>{`${nomesDosMeses[mesAtual - 1]}  ${anoAtual}`}</C.Title>
-                    <C.Button position='right' onClick={proximoMes}>&gt;</C.Button>
+                    <C.Button position='left' onClick={handlePreviousMonth}>&lt;</C.Button>
+                    <Title>{`${nomesDosMeses[mesAtual - 1]}  ${anoAtual}`}</Title>
+                    <C.Button position='right' onClick={handleNextMonth}>&gt;</C.Button>
                 </C.TitleContent>
                 <C.CalendarioTable>
                     <C.CalendarioThread>
@@ -200,14 +251,14 @@ const Calendario = () => {
                                     <C.CalendarioTd
                                         key={index}
                                         onDoubleClick={() => {
-                                            //console.log("onDoubleClick: ", convertDate(listDataSelecionada[0].eve_dataHora, " - "));
-                                            //console.log("onDoubleClick: ", convertDate(selectDate));
                                             if (listDataSelecionada && convertDate(selectDate) === convertDate(listDataSelecionada[0].eve_dataHora))
                                                 showTaskInfo();
                                         }}
                                         onClick={() => {
-                                            if (dia !== null)
+                                            if (dia !== null) {
                                                 handleSelecionarDia(dia, mesAtual, anoAtual);
+                                                //setUpdateCalendar(prevState => prevState + 1);
+                                            }
                                         }}
                                         style={{
                                             ...dia === null ? { cursor: 'default' } : {}
@@ -216,13 +267,13 @@ const Calendario = () => {
                                         <C.RadiusContent
                                             day={dia}
                                             style={{
-                                                // Data atual
-                                                ...dia !== null && isDiaAtual(dia) ? { background: currentDateColor, border: '1px solid #fff' } : {},
                                                 // Controle de cores de acordo com a quantidade de atv cadastradas 
-                                                ...colorControl(dia, mesAtual, anoAtual),
+                                                ...colorControl.length > 0 ? calendarColorControl(dia, mesAtual, anoAtual) : {},
                                                 // Data selecionada
                                                 ...(selectDate && dia === selectDate.dia && mesAtual === selectDate.mes && anoAtual === selectDate.ano
-                                                    ? { background: selectDateColor, border: '1px solid #fff', color: '#E7E7E7' } : {})
+                                                    ? { background: selectDateColor, border: '1px solid #fff', color: '#E7E7E7' } : {}),
+                                                // Data atual
+                                                ...dia !== null && isDiaAtual(dia) ? { background: currentDateColor, border: '1px solid #fff' } : {}
                                             }}>
                                             {dia !== null ? dia : ''}
                                         </C.RadiusContent>

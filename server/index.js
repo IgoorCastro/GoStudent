@@ -67,6 +67,21 @@ app.get("/getDateTaskWeekly", (req, res) => {
 
 });
 
+app.get("/testData", (req, res) => {
+    const { date } = req.query;
+    console.log(date);
+
+    let SQL = "SELECT eve_dataHora FROM agendaaluno ORDER BY eve_dataHora";
+    db.query(SQL, (err, result) => {
+        if (err)
+            console.log(err);
+        else {
+            res.send(result);
+            console.log(result);
+        }
+    });
+});
+
 app.put("/edit", (req, res) => {
     const { titulo } = req.body;
     const { disciplina } = req.body;

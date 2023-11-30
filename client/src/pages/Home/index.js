@@ -7,6 +7,7 @@ import AddTask from '../../components/TaskAdd';
 import TaskInfo from '../../components/TaskInfo';
 import TaskWeekly from '../../components/TaskWeekly';
 import TaskEdit from '../../components/TaskEdit';
+import Label from '../../components/Label';
 import { useCalendarContext } from '../../context/DataContext';
 
 const Home = () => {
@@ -58,12 +59,12 @@ const Home = () => {
                     </C.AddTaskContent>
                     <Calendario />
                     <C.MessageContent>
-                        <C.Label>
+                        <Label>
                             Bem vindo de volta aluno
-                        </C.Label>
-                        <C.Label>
+                        </Label>
+                        <Label>
                             Mantenha seu calendario sempre atualizado
-                        </C.Label>
+                        </Label>
                     </C.MessageContent>
                 </C.CalendarContent>
                 <C.DateInfoContent>

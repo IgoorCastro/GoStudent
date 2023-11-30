@@ -70,26 +70,14 @@ export const TopAddContent = styled.div`
     //border: 1px solid red;
 `;
 
-export const Title = styled.h2`
-    font-size: 22px;
-    text-transform: uppercase;
-
-    ${({ color }) => color && `color: ${color};`}
-    //border: 1px solid blue;
-
-    height: min-content;
-    text-align: center;
-    
-    color: black;
-`;
-
 export const LabelContent = styled.div`
     width: 90%;
+    height: 8%;
     display: flex;
     flex-direction: column;
     align-items: center; 
     
-    padding: 15px 0;  
+    //padding: 15px 0;  
 
     border-radius: 0.3rem;
 
@@ -98,6 +86,10 @@ export const LabelContent = styled.div`
     margin-top: 5%;
 
     //border: 1px solid red;
+
+    &:hover{
+        background: #1B262C;
+    }
 `;
 
 export const Label = styled.label`

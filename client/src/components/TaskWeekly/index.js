@@ -4,6 +4,8 @@ import Axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { useCalendarContext } from '../../context/DataContext';
+import Title from '../../components/Title';
+import Label from '../../components/Label';
 
 const TaskWeekly = () => {
     const [weeklyList, setWeeklyList] = useState({});
@@ -58,7 +60,7 @@ const TaskWeekly = () => {
         <C.WeeklyContainer>
             <C.TopAddContainer>
                 <C.TopAddContent>
-                    <C.Title color='#fff'>Resumo da seamana</C.Title>
+                    <Title>Resumo da seamana</Title>
                 </C.TopAddContent>
             </C.TopAddContainer>
 
@@ -66,7 +68,7 @@ const TaskWeekly = () => {
                 {weeklyList.length > 0 && (
                     weeklyList.map((item, index) => (
                         <C.LabelContent key={index}>
-                            <C.Label key={index}>{item.eve_titulo} - {convertDate(item.eve_dataHora)}</C.Label>
+                            <Label color='#1B262C' hvColor='#E7E7E7' key={index}>{item.eve_titulo} - {convertDate(item.eve_dataHora)}</Label>
                         </C.LabelContent>
                     ))
                 )}

@@ -173,14 +173,6 @@ export const MessageContent = styled.div`
     //border: 1px solid red;
 `;
 
-export const Label = styled.label`
-    font-size: 1.2rem;
-
-    margin-top: 1%;
-
-    //text-transform: uppercase;
-`;
-
 export const Title = styled.h2`
     font-size: 22px;
     text-transform: uppercase;
