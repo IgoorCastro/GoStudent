@@ -134,24 +134,7 @@ const Calendario = () => {
     }
 
     useEffect(() => {
-        // // Verificar se a data que está chegando no parametro está cadastrada no banco
-        // // Data sendo escrita no calendario e para pesquisa no db
-        // let data = null;
-        console.log("Effect");
-        // if(dia)
-        //     data = ano + '/' + mes + '/' + dia;
         getCalendarColorControl();
-        //alert("EFFECT");
-
-
-        //const listLenght = listData.length;
-
-        let dataTest = '30/11/2023'; // Data deve ter 2 registros
-        let testRegistros = 2; // Valor de teste reprensentando a quantidade de registros da 'data' no Db
-
-        // Verifica se há algum registro no Db
-        //let registros = data === dataTest ? testRegistros : null;
-
     }, [updateCalendar]);
 
     const calendarColorControl = (dia, mes, ano) => {
@@ -165,7 +148,6 @@ const Calendario = () => {
             // Laço para ver quantas vezes a data se repete no retorno do banco
             for (let i = 0; i <= updatedColorControl.length - 1; i++) {
                 if (convertDate(updatedColorControl[i].eve_dataHora) === dataAtual) {
-                    console.log("true");
                     repeatedDaysCount++;
                     updatedColorControl.splice(i, 1);
                     i--;

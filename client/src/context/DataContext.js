@@ -13,11 +13,27 @@ export const useCalendarContext = () => {
 export const DataProvider = ({ children }) => {
     const [listDataSelecionada, setListDataSelecionada] = useState(null);
     const [dataSelecionada, setDataSelecionada] = useState(null);
+    const [currentIndex, setCurrentIndex] = useState(0);
 
     const [isTaskInfoVisible, setIsTaskInfoVisible] = useState(false);
     const [isTaskAddVisible, setIsTaskAddVisible] = useState(false);
     const [isTaskWeeklyVisible, setIsTaskWeeklVisible] = useState(true);
     const [isTaskEditVisible, setIsTaskEditVisible] = useState(null);
+    const [convertIdCategoria, setconvertIdCategoria] = useState();
+
+    const setCurrentIndx = (index) => {
+        if (index)
+            setCurrentIndex(index);
+        else
+            setCurrentIndex(0);
+    }
+
+    const setConvertIdCtg = (listCategoria) => {
+        if (listCategoria)
+            setconvertIdCategoria(listCategoria);
+        else
+            setconvertIdCategoria("Registre categorias");
+    }
 
     const setListData = (listData) => {
         // Caso a lista esteja vazia, setar apenas a data selecionada
@@ -87,7 +103,7 @@ export const DataProvider = ({ children }) => {
         <DataContext.Provider value={{
             listDataSelecionada, setListData, dataSelecionada, setData, isTaskInfoVisible, toggleComponentVisibility,
             isTaskAddVisible, showAddTask, showTaskInfo, closeTaskInfo, closeTaskAdd, isTaskWeeklyVisible, showWeeklyTask, closeTaskWeekly,
-            isTaskEditVisible, showTaskEdit, closeTaskEdit
+            isTaskEditVisible, showTaskEdit, closeTaskEdit, setConvertIdCtg, convertIdCategoria, setCurrentIndx, currentIndex
         }}>
             {children}
         </DataContext.Provider>

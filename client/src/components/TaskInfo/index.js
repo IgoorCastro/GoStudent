@@ -9,12 +9,12 @@ import Button from '../Button';
 
 const TaskInfo = () => {
     // Pegando useCalendarContext do contexto
-    const { dataSelecionada, closeTaskInfo, showWeeklyTask, listDataSelecionada, setListData, showTaskEdit } = useCalendarContext();
+    const { dataSelecionada, closeTaskInfo, currentIndex, setCurrentIndx, listDataSelecionada, setListData, showTaskEdit } = useCalendarContext();
     console.log("listDataSelecionada: ", listDataSelecionada);
 
     // State para guardar as informações das input
     const [values, setValues] = useState();
-    const [currentIndex, setCurrentIndex] = useState(0);
+
 
 
     const handleClickButton = () => {
@@ -45,14 +45,14 @@ const TaskInfo = () => {
     var dataString = null, titleString = null, disciplinaString = null, tipoString = null, observacaoString = null;
     console.log(listDataSelecionada.length);
     if (listDataSelecionada && listDataSelecionada.length > 1) {
-        //console.log("TaskInfo: ", listDataSelecionada);
+        console.log("---TaskInfo: ", listDataSelecionada);
         dataString = convertDate(listDataSelecionada[currentIndex].eve_dataHora);
 
         titleString = listDataSelecionada[currentIndex].eve_titulo;
 
         disciplinaString = listDataSelecionada[currentIndex].dis_id;
 
-        tipoString = listDataSelecionada[currentIndex].cat_id;
+        tipoString = listDataSelecionada[currentIndex].cat_nome;
 
         observacaoString = listDataSelecionada[currentIndex].eve_descricao;
     } else {
@@ -62,7 +62,7 @@ const TaskInfo = () => {
 
         disciplinaString = listDataSelecionada[0].dis_id;
 
-        tipoString = listDataSelecionada[0].cat_id;
+        tipoString = listDataSelecionada[0].cat_nome;
 
         observacaoString = listDataSelecionada[0].eve_descricao;
     }
@@ -71,14 +71,12 @@ const TaskInfo = () => {
         //console.log("currentIndex: ", currentIndex);
         //console.log("listDataSelecionada.length: ", listDataSelecionada.length - 1);
         if (currentIndex < listDataSelecionada.length - 1)
-            setCurrentIndex(currentIndex + 1);
+            setCurrentIndx(currentIndex + 1);
     }
 
     const handlePrevious = () => {
-        //console.log("currentIndex: ", currentIndex);
-        //console.log("listDataSelecionada.length: ", listDataSelecionada.length - 1);
         if (currentIndex > 0)
-            setCurrentIndex(currentIndex - 1);
+            setCurrentIndx(currentIndex - 1);
     }
 
     // Verificar se dataSelecionado é um Array
@@ -93,8 +91,8 @@ const TaskInfo = () => {
     }
 
     const handleDeletButton = () => {
-        console.log("ID: ", listDataSelecionada[0].eve_id);
-        Axios.delete(`http://localhost:3001/delete/${listDataSelecionada[0].eve_id}`);
+        console.log("ID: ", listDataSelecionada[currentIndex].eve_id);
+        Axios.delete(`http://localhost:3001/delete/${listDataSelecionada[currentIndex].eve_id}`);
         alert("Registro deletado");
         closeTaskInfo();
     }

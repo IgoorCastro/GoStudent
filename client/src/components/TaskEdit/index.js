@@ -9,7 +9,7 @@ import Button from '../Button';
 
 const TaskEdit = () => {
     // Pegando useDataContext do contexto
-    const { isTaskEditVisible, listDataSelecionada, closeTaskEdit, dataSelecionada } = useCalendarContext();
+    const { isTaskEditVisible, listDataSelecionada, closeTaskEdit, dataSelecionada, currentIndex } = useCalendarContext();
     console.log("Context - listDataSelecionada: ", listDataSelecionada);
 
     // State para guardar as informações das input
@@ -23,7 +23,7 @@ const TaskEdit = () => {
         // outros campos do formulário aqui
     });
     const [lastListDataSelecionada, setLastListDataSelecionada] = useState();
-    console.log("dataString: ", values);
+    //onsole.log("dataString: ", values);
 
     const handleChangeValues = (event) => {
         const { name, value } = event.target;
@@ -72,15 +72,15 @@ const TaskEdit = () => {
     }
 
     const updateDateData = () => {
-        setLastListDataSelecionada(listDataSelecionada[0].eve_dataHora);
+        setLastListDataSelecionada(listDataSelecionada[currentIndex].eve_dataHora);
         if (Array.isArray(listDataSelecionada) && isTaskEditVisible) {
             setValues({
-                id: listDataSelecionada[0].eve_id,
-                dataString: convertDate(listDataSelecionada[0].eve_dataHora),
-                titleString: listDataSelecionada[0].eve_titulo,
-                disciplinaString: listDataSelecionada[0].dis_id,
-                tipoString: listDataSelecionada[0].cat_id,
-                observacaoString: listDataSelecionada[0].eve_descricao,
+                id: listDataSelecionada[currentIndex].eve_id,
+                dataString: convertDate(listDataSelecionada[currentIndex].eve_dataHora),
+                titleString: listDataSelecionada[currentIndex].eve_titulo,
+                disciplinaString: listDataSelecionada[currentIndex].dis_id,
+                tipoString: listDataSelecionada[currentIndex].cat_id,
+                observacaoString: listDataSelecionada[currentIndex].eve_descricao,
                 // outros campos do formulário aqui
             });
             //alert("ALERT");

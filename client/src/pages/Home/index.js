@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import Axios from 'axios';
 import Calendario from '../../components/Calendario';
 import * as C from './styles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -15,7 +16,15 @@ const Home = () => {
     const [selectedIcon, setSelectedIcon] = useState(false);
 
     // Contexto para controle da renderização do component 'AddTask'
-    const { showAddTask, isTaskInfoVisible, isTaskAddVisible, isTaskWeeklyVisible, isTaskEditVisible } = useCalendarContext();
+    const { showAddTask, isTaskInfoVisible, isTaskAddVisible, isTaskWeeklyVisible, isTaskEditVisible, setConvertIdCtg } = useCalendarContext();
+
+    useEffect(() => {
+        Axios.get("http://localhost:3001/getCategorias", {
+        }).then((response) => {
+            setConvertIdCtg(response.data);
+            console.log("--response: ", response);
+        });
+    }, []);
 
     const toogleCalendarIcon = () => {
         setSelectedIcon(!selectedIcon);
