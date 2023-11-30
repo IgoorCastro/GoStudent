@@ -27,8 +27,11 @@ app.post("/register", (req, res) => {
     const { data } = req.body;
     const { observacao } = req.body;
 
-    let SQL = "INSERT INTO agendaaluno (eve_id, alu_id, dis_id, cat_id, eve_titulo, eve_descricao, eve_dataHora) VALUES ( 0, 1, 1, 1, ?, ?, ?)";
-    db.query(SQL, [titulo, observacao, data], (err, result) => {
+    console.log("tipo: ", tipo);
+
+
+    let SQL = "INSERT INTO agendaaluno (eve_id, alu_id, dis_id, cat_id, eve_titulo, eve_descricao, eve_dataHora) VALUES ( 0, 1, ?, ?, ?, ?, ?)";
+    db.query(SQL, [disciplina, tipo, titulo, observacao, data], (err, result) => {
         if (err)
             console.log(err);
     });
@@ -39,12 +42,14 @@ app.get("/getDateData", (req, res) => {
     const { date } = req.query;
     //console.log("Data db: " + date);
 
-    let SQL = "SELECT * FROM agendaaluno WHERE eve_dataHora = ?";
+    let SQL = "SELECT *, ctg.cat_nome  FROM agendaaluno INNER JOIN categoria ctg USING (cat_id) WHERE eve_dataHora = ?";
     db.query(SQL, [date], (err, result) => {
         if (err)
             console.log(err);
-        else
+        else {
             res.send(result);
+            console.log(">>getDateData: ", result);
+        }
     });
 });
 
@@ -52,8 +57,8 @@ app.get("/getDateTaskWeekly", (req, res) => {
     const { date } = req.query;
     const { lastDate } = req.query;
 
-    console.log("date: ", date);
-    console.log("lastDate", lastDate);
+    // console.log("date: ", date);
+    // console.log("lastDate", lastDate);
 
     let SQL = "SELECT * FROM agendaaluno WHERE eve_dataHora BETWEEN ? AND ? ORDER BY eve_dataHora ASC";
     db.query(SQL, [date, lastDate], (err, result) => {
@@ -61,7 +66,7 @@ app.get("/getDateTaskWeekly", (req, res) => {
             console.log(err);
         else {
             res.send(result);
-            console.log(result);
+            //console.log(result);
         }
     });
 
@@ -69,7 +74,7 @@ app.get("/getDateTaskWeekly", (req, res) => {
 
 app.get("/testData", (req, res) => {
     const { date } = req.query;
-    console.log(date);
+    //console.log(date);
 
     let SQL = "SELECT eve_dataHora FROM agendaaluno ORDER BY eve_dataHora";
     db.query(SQL, (err, result) => {
@@ -82,6 +87,18 @@ app.get("/testData", (req, res) => {
     });
 });
 
+app.get("/getCategorias", (req, res) => {
+    let SQL = "SELECT cat_nome FROM categoria";
+    db.query(SQL, (err, result) => {
+        if (err)
+            console.log(err);
+        else {
+            res.send(result);
+            //console.log(result);
+        }
+    });
+});
+
 app.put("/edit", (req, res) => {
     const { titulo } = req.body;
     const { disciplina } = req.body;
@@ -90,7 +107,7 @@ app.put("/edit", (req, res) => {
     const { observacao } = req.body;
     const { id } = req.body;
 
-    console.log("Edit ID: ", id);
+    //console.log("Edit ID: ", id);
 
     let SQL = "UPDATE agendaaluno SET dis_id = ?, cat_id = ?, eve_titulo = ?, eve_descricao = ?, eve_dataHora = ? WHERE eve_id = ?";
     db.query(SQL, [disciplina, tipo, titulo, observacao, data, id], (err, result) => {

@@ -79,7 +79,7 @@ export const IconsContent = styled.div`
     padding: 10px;
     
     font-size: 2rem;
-    color: #1B262C;
+    color: #0F4C75;
     border-radius: 0.3rem;
 
     display: flex;
@@ -90,6 +90,7 @@ export const IconsContent = styled.div`
     
     &:hover {
         background: #a9a9a9;
+        color: #E7E7E7;
     }
 
     //border: 1px solid red;
@@ -121,10 +122,17 @@ export const Option = styled.option`
 `;
 
 export const Select = styled.select`
-    width: 90%;
-    padding: 8px 3px;
+    outline: none;
+    width: 93%;
 
+    border-radius: 2px;
     border: none;
+
+    font-size: 1rem;
+    padding: 8px 7px;
+    text-align: start;
+
+    //border: 1px solid red;
 `;
 
 export const DefaultA = styled.a`

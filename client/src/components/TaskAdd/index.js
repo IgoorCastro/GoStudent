@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as C from './styles';
 import { useCalendarContext } from '../../context/DataContext';
 import Axios from "axios";
@@ -9,43 +9,8 @@ import Button from '../Button';
 
 const AddTask = () => {
     // Pegando useDataContext do contexto
-    const { isTaskAddVisible, listDataSelecionada, closeTaskAdd, dataSelecionada } = useCalendarContext();
+    const { convertIdCategoria, listDataSelecionada, closeTaskAdd, dataSelecionada } = useCalendarContext();
     console.log(listDataSelecionada);
-
-    // State para guardar as informações das input
-    const [values, setValues] = useState();
-
-    const handleChangeValues = (value) => {
-        //console.log(value.target.value);
-        setValues(prevValue => ({
-            ...prevValue,
-            [value.target.name]: value.target.value,
-        }));
-    }
-
-    const handleClickButton = () => {
-        // Formatação da data para o DB
-        if (dataSelecionada) {
-            var data = dataSelecionada;
-        }
-
-
-        console.log("Data: ", data);
-
-        Axios.post("http://localhost:3001/register", {
-            titulo: values.titulo,
-            disciplina: values.disciplina,
-            tipo: values.tipo,
-            data: data,
-            observacao: values.observacao
-        }).then((response) => {
-            console.log(response);
-        });
-        //console.log(values);
-
-        alert("Registro concluido");
-        closeTaskAdd();
-    }
 
     const convertDate = (date) => {
         //console.log("E-convertDate: " + date);
@@ -62,6 +27,51 @@ const AddTask = () => {
         //console.log("convertDate: " + dataString);
         return dataString;
     }
+
+    // State para guardar as informações das input
+    const [values, setValues] = useState({
+        id: '',
+        data: dataSelecionada,
+        tipo: 1,
+        disciplina: 1,
+        titulo: '',
+        observacao: '',
+    });
+    console.log("--values: ", values);
+
+
+    const handleChangeValues = (value) => {
+        console.log("value.target.name: ", value.target.name);
+        console.log("value.target.value: ", value.target.value);
+
+        setValues(prevValues => ({
+            ...prevValues,
+            [value.target.name]: value.target.value,
+        }));
+    }
+
+    const handleClickButton = () => {
+        // Formatação da data para o DB
+        if (dataSelecionada) {
+            var data = dataSelecionada;
+        }
+        // console.log("Data: ", data);
+
+        Axios.post("http://localhost:3001/register", {
+            titulo: values.titulo,
+            disciplina: values.disciplina,
+            tipo: values.tipo,
+            data: values.data,
+            observacao: values.observacao
+        }).then((response) => {
+            console.log(response);
+        });
+
+        alert("Registro concluido");
+        closeTaskAdd();
+    }
+
+
 
     var dataString = null;
     //console.log("if-TaskAdd: ", dataSelecionada);
@@ -134,16 +144,18 @@ const AddTask = () => {
                         <C.Label>tipo:</C.Label>
                     </C.AuxDiv>
                     <C.Select name='tipo' onChange={handleChangeValues}>
-                        <C.Option value='atividade' >ATIVIDADE</C.Option>
-                        <C.Option value='avaliação'>AVALIAÇÃO</C.Option>
-                        <C.Option value='trabalho'>TRABALHO</C.Option>
+                        {convertIdCategoria.map((item, index) => (
+                            <C.Option key={index} value={index + 1}>
+                                {item.cat_nome}
+                            </C.Option>
+                        ))}
                     </C.Select>
                 </C.InputContent>
                 <C.InputContent>
                     <C.AuxDiv>
                         <C.Label>data:</C.Label>
                     </C.AuxDiv>
-                    <Input type='text' bg='#fff' name='data' onChange={handleChangeValues} value={dataString}></Input>
+                    <Input type='text' bg='#fff' name='data' onChange={handleChangeValues} defaultValue={dataString}></Input>
                 </C.InputContent>
                 <C.InputContent>
                     <C.AuxDiv>
