@@ -1,18 +1,13 @@
 import styled from "styled-components";
 
 export const AddContainer = styled.div`
-    width: 95%;
-
-    // @media (min-width: 768px){
-    //     width: 35%;
-    // }
+    position: relative;
+    width: 100%;
+    height: 100%;
 
     display: flex;
     flex-direction: column;
     align-items: center;
-
-    //background: rgb(255,255,255, 0.2);
-    //background: rgb(255,144,124, 0.9);
 
     border-radius: 15px;
 

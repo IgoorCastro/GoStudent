@@ -4,13 +4,25 @@ import { useCalendarContext } from '../../context/DataContext';
 import Axios from "axios";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell, faTurnUp } from '@fortawesome/free-solid-svg-icons';
+import ConfirmEvent from '../../components/ConfirmEvent';
 import Input from '../Input';
 import Button from '../Button';
+import LabelErro from '../../components/LabelErro';
 
 const AddTask = () => {
     // Pegando useDataContext do contexto
-    const { convertIdCategoria, listDataSelecionada, closeTaskAdd, dataSelecionada } = useCalendarContext();
-    console.log(listDataSelecionada);
+    const { convertIdCategoria, closeTaskAdd, dataSelecionada, isTaskConfirmEvent, showTaskConfirmEvent } = useCalendarContext();
+    const [erro, setErro] = useState("");
+
+    // State para guardar as informações das input
+    const [values, setValues] = useState({
+        data: '',
+        tipo: 1,
+        disciplina: 1,
+        titulo: '',
+        observacao: '',
+    });
+    console.log("--values: ", values);
 
     const convertDate = (date) => {
         //console.log("E-convertDate: " + date);
@@ -28,16 +40,12 @@ const AddTask = () => {
         return dataString;
     }
 
-    // State para guardar as informações das input
-    const [values, setValues] = useState({
-        id: '',
-        data: dataSelecionada,
-        tipo: 1,
-        disciplina: 1,
-        titulo: '',
-        observacao: '',
-    });
-    console.log("--values: ", values);
+    useEffect(() => {
+        setValues(prevValues => ({
+            ...prevValues,
+            data: dataSelecionada
+        }));
+    }, [dataSelecionada]);
 
 
     const handleChangeValues = (value) => {
@@ -51,11 +59,20 @@ const AddTask = () => {
     }
 
     const handleClickButton = () => {
+        //Mensagens de erro
+        if (!values.titulo) {
+            setErro("Título obrigatório");
+            return;
+        }
+
+        showTaskConfirmEvent();
+    }
+
+    const handleConfirmReg = () => {
         // Formatação da data para o DB
         if (dataSelecionada) {
             var data = dataSelecionada;
         }
-        // console.log("Data: ", data);
 
         Axios.post("http://localhost:3001/register", {
             titulo: values.titulo,
@@ -64,35 +81,11 @@ const AddTask = () => {
             data: values.data,
             observacao: values.observacao
         }).then((response) => {
-            console.log(response);
+            console.log("--response: ", response);
         });
 
-        alert("Registro concluido");
+        alert("Registro concluidos");
         closeTaskAdd();
-    }
-
-
-
-    var dataString = null;
-    //console.log("if-TaskAdd: ", dataSelecionada);
-    // console.log("if-TaskAdd: ", listDataSelecionada[0].eve_dataHora);
-    if (listDataSelecionada && convertDate(listDataSelecionada[0].eve_dataHora) === dataSelecionada) {
-        const data = new Date(listDataSelecionada[0].eve_dataHora);
-
-        const dia = data.getDate(); // Obter o ano como dia
-        const mes = data.getMonth() + 1; // Mês (lembrando que Janeiro começa do zero)
-        const ano = data.getFullYear(); // Obter o dia como ano
-
-        // Formatar para o padrão dd/mm/yyyy
-        dataString = `${dia}/${mes}/${ano}`;
-    }
-    else {
-        // Formatar para o padrão dd/mm/yyyy
-        let parts = dataSelecionada.split('/'); // Dividindo a string nos separadores '/'
-
-        // Rearranjando as partes para formar a nova string invertida
-        let invertedDate = parts[2] + '/' + parts[1] + '/' + parts[0];
-        dataString = invertedDate;
     }
 
 
@@ -111,6 +104,8 @@ const AddTask = () => {
 
     return (
         <C.AddContainer>
+            {isTaskConfirmEvent && <ConfirmEvent title='Confirmar registro' text='Deseja confirmar o registro?' onConfirm={handleConfirmReg}>
+            </ConfirmEvent>}
             <C.TopAddContainer>
                 <C.TopIconsContent>
                     <C.IconsContent>
@@ -131,7 +126,7 @@ const AddTask = () => {
                     <C.AuxDiv>
                         <C.Label>título:</C.Label>
                     </C.AuxDiv>
-                    <Input type='text' bg='#fff' name='titulo' onChange={handleChangeValues} ></Input>
+                    <Input type='text' bg='#fff' name='titulo' onChange={(e) => { handleChangeValues(e); setErro(""); }} ></Input>
                 </C.InputContent>
                 <C.InputContent>
                     <C.AuxDiv>
@@ -155,7 +150,7 @@ const AddTask = () => {
                     <C.AuxDiv>
                         <C.Label>data:</C.Label>
                     </C.AuxDiv>
-                    <Input type='text' bg='#fff' name='data' onChange={handleChangeValues} defaultValue={dataString}></Input>
+                    <Input type='text' bg='#fff' name='data' value={convertDate(dataSelecionada)}></Input>
                 </C.InputContent>
                 <C.InputContent>
                     <C.AuxDiv>
@@ -163,10 +158,10 @@ const AddTask = () => {
                     </C.AuxDiv>
                     <Input type='text' bg='#fff' name='observacao' onChange={handleChangeValues} ></Input>
                 </C.InputContent>
-                <Button text='SALVAR' onClick={() => handleClickButton()}></Button>
+                <LabelErro>{erro}</LabelErro>
+                <Button text='SALVAR' onClick={handleClickButton}></Button>
             </C.MainAddCointainer>
         </C.AddContainer>
-
     )
 }
 

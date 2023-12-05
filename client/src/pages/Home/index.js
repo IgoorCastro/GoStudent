@@ -63,9 +63,6 @@ const Home = () => {
             </C.Navbar>
             <C.CalendarContainer>
                 <C.CalendarContent>
-                    <C.AddTaskContent>
-                        <C.Button position='left' border='#fb6e66' bg='#3282B8' color='#fff' fs='24px' onClick={toggleAddTask} >+</C.Button>
-                    </C.AddTaskContent>
                     <Calendario />
                     <C.MessageContent>
                         <Label>

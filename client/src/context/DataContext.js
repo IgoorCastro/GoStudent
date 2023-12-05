@@ -21,6 +21,17 @@ export const DataProvider = ({ children }) => {
     const [isTaskEditVisible, setIsTaskEditVisible] = useState(null);
     const [convertIdCategoria, setconvertIdCategoria] = useState();
 
+    // Contexto de confirmação de evento
+    const [isTaskConfirmEvent, setIsTaskConfirmEvent] = useState(false);
+
+    const showTaskConfirmEvent = () => {
+        setIsTaskConfirmEvent(true);
+    }
+
+    const closeTaskConfirmEvent = () => {
+        setIsTaskConfirmEvent(false);
+    }
+
     const setCurrentIndx = (index) => {
         if (index)
             setCurrentIndex(index);
@@ -44,7 +55,7 @@ export const DataProvider = ({ children }) => {
 
     const setData = (data) => {
         setDataSelecionada(data);
-        //console.log("(context 'setData': ", dataSelecionada);
+        console.log("(context 'setData': ", dataSelecionada);
     }
 
     const showTaskEdit = () => {
@@ -103,7 +114,8 @@ export const DataProvider = ({ children }) => {
         <DataContext.Provider value={{
             listDataSelecionada, setListData, dataSelecionada, setData, isTaskInfoVisible, toggleComponentVisibility,
             isTaskAddVisible, showAddTask, showTaskInfo, closeTaskInfo, closeTaskAdd, isTaskWeeklyVisible, showWeeklyTask, closeTaskWeekly,
-            isTaskEditVisible, showTaskEdit, closeTaskEdit, setConvertIdCtg, convertIdCategoria, setCurrentIndx, currentIndex
+            isTaskEditVisible, showTaskEdit, closeTaskEdit, setConvertIdCtg, convertIdCategoria, setCurrentIndx, currentIndex,
+            isTaskConfirmEvent, showTaskConfirmEvent, closeTaskConfirmEvent
         }}>
             {children}
         </DataContext.Provider>

@@ -8,8 +8,8 @@ export const Button = styled.button`
     padding: 12px 0;
     cursor: pointer;
 
-    background-color: #F74C51;
-    border: 1px solid #F74C51;
+    background-color: #0F4C75;
+    border: 1px solid #0F4C75;
     border-radius: 0.25rem;
 
     font-family: 'Staatliches', sans-serif;
@@ -18,5 +18,8 @@ export const Button = styled.button`
     letter-spacing: 2px;
     color: #fff;
 
-    //margin: 2%;
+    &:hover{
+        background-color: #3282B8;
+        border: 1px solid #3282B8;
+    }
 `;

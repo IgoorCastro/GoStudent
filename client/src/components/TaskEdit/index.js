@@ -7,10 +7,12 @@ import { faBell, faTurnUp } from '@fortawesome/free-solid-svg-icons';
 import Input from '../Input';
 import Button from '../Button';
 import Title from '../../components/Title';
+import LabelErro from '../../components/LabelErro';
+import ConfirmEvent from '../../components/ConfirmEvent';
 
 const TaskEdit = () => {
     // Pegando useDataContext do contexto
-    const { isTaskEditVisible, listDataSelecionada, closeTaskEdit, dataSelecionada, currentIndex } = useCalendarContext();
+    const { isTaskEditVisible, listDataSelecionada, closeTaskEdit, currentIndex, isTaskConfirmEvent, showTaskConfirmEvent } = useCalendarContext();
     console.log("Context - listDataSelecionada: ", listDataSelecionada);
 
     // State para guardar as informações das input
@@ -23,7 +25,10 @@ const TaskEdit = () => {
         observacaoString: listDataSelecionada[0].eve_descricao,
         // outros campos do formulário aqui
     });
+    console.log("--values: ", values);
+
     const [lastListDataSelecionada, setLastListDataSelecionada] = useState();
+    const [erro, setErro] = useState("");
     //onsole.log("dataString: ", values);
 
     const handleChangeValues = (event) => {
@@ -35,26 +40,30 @@ const TaskEdit = () => {
     }
 
     const handleClickButton = () => {
-        // Formatação da data para o DB
-        if (listDataSelecionada) {
-            const fragmentDate = values.dataString.split('/');
-            const dateToDb = fragmentDate[2] + '/' + fragmentDate[1] + '/' + fragmentDate[0];;
-
-            Axios.put("http://localhost:3001/edit", {
-                data: dateToDb,
-                titulo: values.titleString,
-                disciplina: values.disciplinaString,
-                tipo: values.tipoString,
-                observacao: values.observacaoString,
-                id: values.id,
-            });
-            alert("Alteração concluida");
-            closeTaskEdit();
+        if (!values.titleString) {
+            setErro("Título obrigatório");
+            return;
         }
-        else
-            var data = dataSelecionada;
-        console.log("Data: ", data);
+
+        showTaskConfirmEvent();
     }
+
+    const handleConfirmEdit = () => {
+        const fragmentDate = values.dataString.split('/');
+        const dateToDb = fragmentDate[2] + '/' + fragmentDate[1] + '/' + fragmentDate[0];;
+
+        Axios.put("http://localhost:3001/edit", {
+            data: dateToDb,
+            titulo: values.titleString,
+            disciplina: values.disciplinaString,
+            tipo: values.tipoString,
+            observacao: values.observacaoString,
+            id: values.id,
+        });
+        alert("Alteração concluida");
+        closeTaskEdit();
+    }
+
 
     const convertDate = (date) => {
         //console.log("E-convertDate: " + date);
@@ -111,6 +120,8 @@ const TaskEdit = () => {
 
     return (
         <C.AddContainer>
+            {isTaskConfirmEvent && <ConfirmEvent title='Editar' text='Confirmar edição do registro?' onConfirm={handleConfirmEdit}>
+            </ConfirmEvent>}
             <C.TopAddContainer>
                 <C.TopIconsContent>
                     <C.IconsContent>
@@ -131,7 +142,7 @@ const TaskEdit = () => {
                     <C.AuxDiv>
                         <C.Label>título:</C.Label>
                     </C.AuxDiv>
-                    <Input type='text' bg='#fff' name='titleString' onChange={handleChangeValues} defaultValue={values.titleString} ></Input>
+                    <Input type='text' bg='#fff' name='titleString' onChange={(e) => { handleChangeValues(e); setErro(""); }} defaultValue={values.titleString} ></Input>
                 </C.InputContent>
                 <C.InputContent>
                     <C.AuxDiv>
@@ -161,7 +172,8 @@ const TaskEdit = () => {
                     </C.AuxDiv>
                     <Input type='text' bg='#fff' name='observacaoString' onChange={handleChangeValues} defaultValue={values.observacaoString} ></Input>
                 </C.InputContent>
-                <Button text='SALVAR' onClick={() => handleClickButton()}></Button>
+                <LabelErro>{erro}</LabelErro>
+                <Button text='SALVAR' onClick={handleClickButton}></Button>
             </C.MainAddCointainer>
         </C.AddContainer>
 

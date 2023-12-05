@@ -5,7 +5,7 @@ import { useCalendarContext } from '../../context/DataContext';
 import Title from '../Title';
 
 const Calendario = () => {
-    const { showTaskInfo, listDataSelecionada, setListData, setData, dataSelecionada } = useCalendarContext();
+    const { showTaskInfo, showAddTask, listDataSelecionada, setListData, setData, dataSelecionada } = useCalendarContext();
     setListData({});
     // console.log("listDataSelecionada: ", listDataSelecionada);
     // console.log("dataSelecionada: ", dataSelecionada);
@@ -62,10 +62,8 @@ const Calendario = () => {
 
     // Função para lidar com a seleção de um dia
     const handleSelecionarDia = (dia, mes, ano) => {
-        //console.log("handleSelecionarDia: ", ano + "/" + mes + "/" + dia);
         setSelectDate({ dia, mes, ano });
         setData(ano + "/" + mes + "/" + dia);
-        //console.log("selectDate: ", selectDate);
 
         Axios.get("http://localhost:3001/getDateData", {
             params: {
@@ -73,9 +71,7 @@ const Calendario = () => {
             }
         }).then((response) => {
             setListData(response.data);
-            //console.log("response: ", response);
         });
-
     };
 
     const helpRequest = () => {
@@ -85,8 +81,8 @@ const Calendario = () => {
     // --------------------------------- Funções principais ---------------------------------
     // Função responsavel por retornar a quantidade de dias de um determinado (ano, mês) sendo passado por parametro
     // Cada mês tem sua quantidade de dias
-    const getDaysInMonth = (year, month) => {
-        const date = new Date(year, month - 1, 1); //Pega o primeiro dia do mes (ex: 1/9/2023 : outubro)
+    const getDaysInMonth = (ano, mes) => {
+        const date = new Date(ano, mes - 1, 1); //Pega o primeiro dia do mes (ex: 1/9/2023 : outubro)
         date.setMonth(date.getMonth() + 1); //Avança um mês (soma + 1 no mês, ex: 1/10/2023)
         date.setDate(date.getDate() - 1); //Volta um dia para pegar o ultimo dia do mes (ex: 31/9/2023)
         return date.getDate(); // Retorna apenas o dia
@@ -235,11 +231,12 @@ const Calendario = () => {
                                         onDoubleClick={() => {
                                             if (listDataSelecionada && convertDate(selectDate) === convertDate(listDataSelecionada[0].eve_dataHora))
                                                 showTaskInfo();
+
                                         }}
                                         onClick={() => {
                                             if (dia !== null) {
                                                 handleSelecionarDia(dia, mesAtual, anoAtual);
-                                                //setUpdateCalendar(prevState => prevState + 1);
+                                                showAddTask();
                                             }
                                         }}
                                         style={{

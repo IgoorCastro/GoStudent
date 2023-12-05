@@ -1,7 +1,9 @@
 import styled from "styled-components";
 
 export const AddContainer = styled.div`
-    width: 95%;
+    position: relative;
+    width: 100%;
+    height: 100%;
 
     // @media (min-width: 768px){
     //     width: 35%;

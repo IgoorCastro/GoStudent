@@ -5,10 +5,11 @@ import Axios from "axios";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faTurnUp, faPen, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import Title from '../../components/Title';
+import ConfirmEvent from '../../components/ConfirmEvent';
 
 const TaskInfo = () => {
     // Pegando useCalendarContext do contexto
-    const { dataSelecionada, closeTaskInfo, currentIndex, setCurrentIndx, listDataSelecionada, setListData, showTaskEdit } = useCalendarContext();
+    const { dataSelecionada, closeTaskInfo, currentIndex, setCurrentIndx, listDataSelecionada, showTaskEdit, isTaskConfirmEvent, showTaskConfirmEvent } = useCalendarContext();
     console.log("listDataSelecionada: ", listDataSelecionada);
 
     // State para guardar as informações das input
@@ -90,7 +91,11 @@ const TaskInfo = () => {
     }
 
     const handleDeletButton = () => {
+        showTaskConfirmEvent();
         console.log("ID: ", listDataSelecionada[currentIndex].eve_id);
+    }
+
+    const handleConfirmDelet = () => {
         Axios.delete(`http://localhost:3001/delete/${listDataSelecionada[currentIndex].eve_id}`);
         alert("Registro deletado");
         closeTaskInfo();
@@ -103,6 +108,8 @@ const TaskInfo = () => {
 
     return (
         <C.AddContainer>
+            {isTaskConfirmEvent && <ConfirmEvent title='Excluir' text='Deseja excluir o registro?' onConfirm={handleConfirmDelet}>
+            </ConfirmEvent>}
             {listDataSelecionada.length > 1 && convertDate(listDataSelecionada[0].eve_dataHora) === convertDate(dataSelecionada) && (
                 <C.ButtonContainer onClick={() => handlePrevious()}>
                     <FontAwesomeIcon icon={faChevronLeft} />
