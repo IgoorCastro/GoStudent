@@ -7,11 +7,12 @@ import { faBell, faTurnUp } from '@fortawesome/free-solid-svg-icons';
 import ConfirmEvent from '../../components/ConfirmEvent';
 import Input from '../Input';
 import Button from '../Button';
+import Title from '../Title';
 import LabelErro from '../../components/LabelErro';
 
 const AddTask = () => {
     // Pegando useDataContext do contexto
-    const { convertIdCategoria, closeTaskAdd, dataSelecionada, isTaskConfirmEvent, showTaskConfirmEvent } = useCalendarContext();
+    const { convertIdCategoria, nameDisciplina, closeTaskAdd, dataSelecionada, isTaskConfirmEvent, showTaskConfirmEvent } = useCalendarContext();
     const [erro, setErro] = useState("");
 
     // State para guardar as informações das input
@@ -49,8 +50,8 @@ const AddTask = () => {
 
 
     const handleChangeValues = (value) => {
-        console.log("value.target.name: ", value.target.name);
-        console.log("value.target.value: ", value.target.value);
+        // console.log("value.target.name: ", value.target.name);
+        // console.log("value.target.value: ", value.target.value);
 
         setValues(prevValues => ({
             ...prevValues,
@@ -107,60 +108,56 @@ const AddTask = () => {
             {isTaskConfirmEvent && <ConfirmEvent title='Confirmar registro' text='Deseja confirmar o registro?' onConfirm={handleConfirmReg}>
             </ConfirmEvent>}
             <C.TopAddContainer>
-                <C.TopIconsContent>
+                <C.TopIconContainer>
                     <C.IconsContent>
                         <FontAwesomeIcon icon={faTurnUp} rotation={270} onClick={handleClickExit} />
                     </C.IconsContent>
                     <C.IconsContent>
                         <FontAwesomeIcon icon={faBell} onClick={handleClickConfiNotif} />
                     </C.IconsContent>
-                </C.TopIconsContent>
-                <C.TopAddContent>
-                    <C.DefaultA onClick={null}></C.DefaultA>
-                    <C.Title color='#fff'>REGISTRAR</C.Title>
-                    <C.DefaultA onClick={null}></C.DefaultA>
-                </C.TopAddContent>
+                </C.TopIconContainer>
+                <C.TopAddTitle>
+                    <Title>REGISTRAR</Title>
+                </C.TopAddTitle>
             </C.TopAddContainer>
-            <C.MainAddCointainer>
-                <C.InputContent>
-                    <C.AuxDiv>
-                        <C.Label>título:</C.Label>
-                    </C.AuxDiv>
-                    <Input type='text' bg='#fff' name='titulo' onChange={(e) => { handleChangeValues(e); setErro(""); }} ></Input>
-                </C.InputContent>
-                <C.InputContent>
-                    <C.AuxDiv>
-                        <C.Label>disciplina:</C.Label>
-                    </C.AuxDiv>
-                    <Input type='text' bg='#fff' name='disciplina' onChange={handleChangeValues} ></Input>
-                </C.InputContent>
-                <C.InputContent>
-                    <C.AuxDiv>
-                        <C.Label>tipo:</C.Label>
-                    </C.AuxDiv>
-                    <C.Select name='tipo' onChange={handleChangeValues}>
-                        {convertIdCategoria.map((item, index) => (
-                            <C.Option key={index} value={index + 1}>
-                                {item.cat_nome}
-                            </C.Option>
-                        ))}
-                    </C.Select>
-                </C.InputContent>
-                <C.InputContent>
-                    <C.AuxDiv>
-                        <C.Label>data:</C.Label>
-                    </C.AuxDiv>
-                    <Input type='text' bg='#fff' name='data' value={convertDate(dataSelecionada)}></Input>
-                </C.InputContent>
-                <C.InputContent>
-                    <C.AuxDiv>
-                        <C.Label>observação:</C.Label>
-                    </C.AuxDiv>
-                    <Input type='text' bg='#fff' name='observacao' onChange={handleChangeValues} ></Input>
-                </C.InputContent>
-                <LabelErro>{erro}</LabelErro>
-                <Button text='SALVAR' onClick={handleClickButton}></Button>
-            </C.MainAddCointainer>
+
+            <C.MainAddContainer>
+                <C.InputContainer>
+                    <C.DateContent>
+                        <C.LabelDate>{convertDate(dataSelecionada)}</C.LabelDate>
+                    </C.DateContent>
+                    <C.InputContent>
+                        <Input type='text' bg='#fff' name='titulo' placeholder='Título' onChange={(e) => { handleChangeValues(e); setErro(""); }} ></Input>
+                    </C.InputContent>
+                    <C.InputContent>
+                        <C.Select name='disciplina' onChange={handleChangeValues}>
+                            <C.Option value='1' disabled selected>Disciplina</C.Option>
+                            {nameDisciplina.map((item, index) => (
+                                <C.Option key={index} value={index + 1}>
+                                    {item.dis_nome}
+                                </C.Option>
+                            ))}
+                        </C.Select>
+                    </C.InputContent>
+                    <C.InputContent>
+                        <C.Select name='tipo' onChange={handleChangeValues}>
+                            <C.Option value='1' disabled selected>Tipo de atividade</C.Option>
+                            {convertIdCategoria.map((item, index) => (
+                                <C.Option key={index} value={index + 1}>
+                                    {item.cat_nome}
+                                </C.Option>
+                            ))}
+                        </C.Select>
+                    </C.InputContent>
+                    <C.InputContent>
+                        <C.InputObs type='text' bg='#fff' name='observacao' placeholder='Observação' onChange={handleChangeValues} ></C.InputObs>
+                    </C.InputContent>
+                </C.InputContainer>
+                <C.ButtonContainer>
+                    <LabelErro>{erro}</LabelErro>
+                    <Button text='SALVAR' onClick={handleClickButton}></Button>
+                </C.ButtonContainer>
+            </C.MainAddContainer>
         </C.AddContainer>
     )
 }

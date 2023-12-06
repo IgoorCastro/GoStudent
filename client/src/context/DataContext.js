@@ -20,6 +20,7 @@ export const DataProvider = ({ children }) => {
     const [isTaskWeeklyVisible, setIsTaskWeeklVisible] = useState(true);
     const [isTaskEditVisible, setIsTaskEditVisible] = useState(null);
     const [convertIdCategoria, setconvertIdCategoria] = useState();
+    const [nameDisciplina, setNameDisciplina] = useState();
 
     // Contexto de confirmação de evento
     const [isTaskConfirmEvent, setIsTaskConfirmEvent] = useState(false);
@@ -39,11 +40,18 @@ export const DataProvider = ({ children }) => {
             setCurrentIndex(0);
     }
 
+    const setNameDscp = (listDisciplina) => {
+        if (listDisciplina)
+            setNameDisciplina(listDisciplina);
+        else
+            setNameDisciplina("Registre categorias no DB!");
+    }
+
     const setConvertIdCtg = (listCategoria) => {
         if (listCategoria)
             setconvertIdCategoria(listCategoria);
         else
-            setconvertIdCategoria("Registre categorias");
+            setconvertIdCategoria("Registre categorias no DB!");
     }
 
     const setListData = (listData) => {
@@ -115,7 +123,7 @@ export const DataProvider = ({ children }) => {
             listDataSelecionada, setListData, dataSelecionada, setData, isTaskInfoVisible, toggleComponentVisibility,
             isTaskAddVisible, showAddTask, showTaskInfo, closeTaskInfo, closeTaskAdd, isTaskWeeklyVisible, showWeeklyTask, closeTaskWeekly,
             isTaskEditVisible, showTaskEdit, closeTaskEdit, setConvertIdCtg, convertIdCategoria, setCurrentIndx, currentIndex,
-            isTaskConfirmEvent, showTaskConfirmEvent, closeTaskConfirmEvent
+            isTaskConfirmEvent, showTaskConfirmEvent, closeTaskConfirmEvent, nameDisciplina, setNameDscp
         }}>
             {children}
         </DataContext.Provider>

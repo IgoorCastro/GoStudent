@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import * as C from './styles';
 import Axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
 import { useCalendarContext } from '../../context/DataContext';
 import Title from '../../components/Title';
 import Label from '../../components/Label';
@@ -12,8 +12,22 @@ const TaskWeekly = () => {
     console.log("weeklyList: ", weeklyList);
     const { isTaskWeeklyVisible } = useCalendarContext();
 
+    const nomesDosMeses = [
+        'Jan',
+        'Fev',
+        'Mar',
+        'Abr',
+        'Mai',
+        'Jun',
+        'Jul',
+        'Ago',
+        'Set',
+        'Out',
+        'Nov',
+        'Dez',
+    ];
+
     const convertDate = (date) => {
-        //console.log("E-convertDate: " + date);
 
         const data = new Date(date);
 
@@ -55,22 +69,63 @@ const TaskWeekly = () => {
         }
     }, []);
 
+    const handleDay = (props) => {
+        const newData = props.eve_dataHora.slice(0, 10);
+
+        const data = new Date(newData);
+        const dia = data.getDate();
+        return dia + 1;
+    }
+    const handleMonth = (props) => {
+        const newData = props.eve_dataHora.slice(0, 10);
+
+        const data = new Date(newData);
+        const mes = data.getMonth();
+        return mes;
+    }
+
     return (
         <C.WeeklyContainer>
-            <C.TopAddContainer>
-                <C.TopAddContent>
-                    <Title>Resumo da seamana</Title>
-                </C.TopAddContent>
-            </C.TopAddContainer>
+            <C.TopWeeklyContainer>
+                <C.TopIconContainer>
+                    <C.TopIconContent><FontAwesomeIcon icon={faCircleInfo} /></C.TopIconContent>
+                </C.TopIconContainer>
+                <C.TopAddTitle>
+                    <Title>Resumo da semana</Title>
+                </C.TopAddTitle>
+            </C.TopWeeklyContainer>
 
             <C.MainContainer>
-                {weeklyList.length > 0 && (
-                    weeklyList.map((item, index) => (
-                        <C.LabelContent key={index}>
-                            <Label color='#1B262C' hvColor='#E7E7E7' key={index}>{item.eve_titulo} - {convertDate(item.eve_dataHora)}</Label>
-                        </C.LabelContent>
-                    ))
-                )}
+                <C.MainContent>
+                    {weeklyList.length > 0 && (
+                        weeklyList.map((item, index) => (
+                            // <C.LabelContent key={index}>
+                            //     <Label color='#1B262C' hvColor='#E7E7E7' key={index}>{item.eve_titulo} - {convertDate(item.eve_dataHora)}</Label>
+                            // </C.LabelContent>
+                            <C.DataInfoContainer>
+                                <C.DataInfoContent>
+                                    <C.DataContainer>
+                                        <C.DayLabel>
+                                            {handleDay(item)}
+                                        </C.DayLabel>
+                                        <C.MonthLabel>
+                                            {nomesDosMeses[handleMonth(item)]}
+                                        </C.MonthLabel>
+                                    </C.DataContainer>
+                                    <C.Divider />
+                                    <C.InfoContainer>
+                                        <C.TitleLabel>
+                                            {item.eve_titulo}
+                                        </C.TitleLabel>
+                                        <C.InfoLabel>
+                                            {item.eve_descricao}
+                                        </C.InfoLabel>
+                                    </C.InfoContainer>
+                                </C.DataInfoContent>
+                            </C.DataInfoContainer>
+                        ))
+                    )}
+                </C.MainContent>
             </C.MainContainer>
         </C.WeeklyContainer>
     )

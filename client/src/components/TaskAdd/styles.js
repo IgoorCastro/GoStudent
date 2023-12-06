@@ -5,71 +5,61 @@ export const AddContainer = styled.div`
     width: 100%;
     height: 100%;
 
-    // @media (min-width: 768px){
-    //     width: 35%;
-    // }
-
     display: flex;
     flex-direction: column;
     align-items: center;
-
-    //background: rgb(255,255,255, 0.2);
-    //background: rgb(255,144,124, 0.9);
-
-    border-radius: 15px;
-
+    justify-content: center;
 
     //border: 1px solid red;
 `;
 
-export const MainAddCointainer = styled.div`
+export const MainAddContainer = styled.div`
     width: 100%;
+    height: 77%;
 
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-around;
+    justify-content: start;
 
-    gap: 15px;
-
-    padding: 20px 0;
     //border: 1px solid red;
 `;
 
 export const TopAddContainer = styled.div`
     width: 100%;
-    border-radius: 15px;
+    height: 23%;
+    
     text-align: center;
 
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    
-    padding: 20px 0;
-
-    //background: #FB6E66;
 
     //border: 1px solid blue;
 `;
 
-export const TopAddContent = styled.div`
+export const TopAddTitle = styled.div`
     width: 90%;
+    height: 40%;
+
     display: flex;
-    align-items: center;
+    align-items: start;
     text-align: center;
-    justify-content: space-between;
+    justify-content: center;
 
     //border: 1px solid red;
 `;
 
-export const TopIconsContent = styled.div`
+export const TopIconContainer = styled.div`
     width: 90%;
-
+    height: 60%;
+    
     display: flex;
     align-items: center;
-    text-align: center;
     justify-content: space-between;
+
+    font-size: 2rem;
 
     //border: 1px solid red;
 `;
@@ -81,7 +71,7 @@ export const IconsContent = styled.div`
     padding: 10px;
     
     font-size: 2rem;
-    color: #1B262C;
+    color: #0F4C75;
     border-radius: 0.3rem;
 
     display: flex;
@@ -97,23 +87,50 @@ export const IconsContent = styled.div`
     //border: 1px solid red;
 `;
 
-export const InputContent = styled.div`
-    width: 90%;
+export const ButtonContainer = styled.div`
+    width: 100%;
+    height: 20%;
     display: flex;
     flex-direction: column;
     align-items: center;   
 
     gap: 9px;
 
+    //border: 1px solid green;
+`;
+
+export const InputContainer = styled.div`
+    width: 100%;
+    height: 75%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;  
+
+    //border: 1px solid blue;
+`;
+
+export const InputContent = styled.div`
+    width: 90%;
+    height: 20%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;   
+    justify-content: start;
+
     //border: 1px solid red;
 `;
 
-export const AuxDiv = styled.div`
-    width: 90%;
-    display: flex;
-    align-items: start;
+export const DateContent = styled.div`
+    width: 40%;
+    height: 20%;
 
-    //border: 1px solid blue;
+    display: flex;
+    flex-direction: column;
+    align-items: center;   
+    justify-content: start;
+
+    //border: 1px solid red;
 `;
 
 export const Option = styled.option`
@@ -129,24 +146,39 @@ export const Select = styled.select`
     border-radius: 2px;
     border: none;
 
-    font-size: 1rem;
-    padding: 8px 7px;
+    font-size: 1.1rem;
+    padding: 15px 7px;
     text-align: start;
+
+    color: #302e2e;
 
     //border: 1px solid red;
 `;
 
-export const DefaultA = styled.a`
-    text-decoration: none;
-    cursor: pointer;
-`;
+export const InputObs = styled.textarea`
+    outline: none;
+    width: 90%;
+    max-width: 100%;
+    height: 100%;
 
-export const Label = styled.label`
-    font-size: 0.9rem;
-    padding: 0;
-    margin: 0;
+    border-radius: 5px;
+    border: none;
 
-    text-transform: uppercase;
+    font-size: 1.1rem;
+    padding: 15px 7px;
+    text-align: start;
+
+    color: #302e2e;
+
+    /* Quebra de linha ao atingir a largura máxima */
+    word-wrap: break-word;
+
+    /* Adiciona barra de rolagem vertical quando a altura exceder o limite */
+    max-height: 200px; /* Altura máxima antes do scrollbar aparecer */
+    overflow-y: auto; /* Adiciona barra de rolagem vertical */
+    resize: none; /* Impede o redimensionamento do textarea pelo usuário */
+    
+    /* Estilos adicionais, se necessário */
 `;
 
 export const Title = styled.h2`
@@ -159,4 +191,22 @@ export const Title = styled.h2`
     height: min-content;
     text-align: center;
     
+`;
+
+export const LabelDate = styled.h2`
+    width: 90%;
+
+    border-radius: 5px;
+    border: none;
+
+    background: #fff;
+    color: #0F4C75;
+
+    font-size: 1.2rem;
+    padding: 15px 7px;
+    text-align: center;    
+
+    box-shadow: 9px 10px 5px -7px rgba(0,0,0,0.2);
+
+    //border: 1px solid blue;
 `;

@@ -16,12 +16,18 @@ const Home = () => {
     const [selectedIcon, setSelectedIcon] = useState(false);
 
     // Contexto para controle da renderização do component 'AddTask'
-    const { showAddTask, isTaskInfoVisible, isTaskAddVisible, isTaskWeeklyVisible, isTaskEditVisible, setConvertIdCtg } = useCalendarContext();
+    const { showAddTask, isTaskInfoVisible, isTaskAddVisible, isTaskWeeklyVisible, isTaskEditVisible, setConvertIdCtg, setNameDscp } = useCalendarContext();
 
     useEffect(() => {
         Axios.get("http://localhost:3001/getCategorias", {
         }).then((response) => {
             setConvertIdCtg(response.data);
+            //console.log("--response: ", response);
+        });
+
+        Axios.get("http://localhost:3001/getDisciplinas", {
+        }).then((response) => {
+            setNameDscp(response.data);
             console.log("--response: ", response);
         });
     }, []);
@@ -41,7 +47,7 @@ const Home = () => {
             <C.Navbar>
                 <C.NavbarContent>
                     <C.IconContentLogo>
-                        LG
+                        GS
                     </C.IconContentLogo>
                     <C.IconGroup>
                         <C.IconContent

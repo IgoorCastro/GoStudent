@@ -60,7 +60,7 @@ app.get("/getDateTaskWeekly", (req, res) => {
     // console.log("date: ", date);
     // console.log("lastDate", lastDate);
 
-    let SQL = "SELECT * FROM agendaaluno WHERE eve_dataHora BETWEEN ? AND ? ORDER BY eve_dataHora ASC";
+    let SQL = "SELECT eve_dataHora, eve_titulo, eve_descricao FROM agendaaluno WHERE eve_dataHora BETWEEN ? AND ? ORDER BY eve_dataHora ASC";
     db.query(SQL, [date, lastDate], (err, result) => {
         if (err)
             console.log(err);
@@ -82,13 +82,25 @@ app.get("/testData", (req, res) => {
             console.log(err);
         else {
             res.send(result);
-            console.log(result);
+            //console.log(result);
         }
     });
 });
 
 app.get("/getCategorias", (req, res) => {
-    let SQL = "SELECT cat_nome FROM categoria";
+    let SQL = "SELECT cat_nome FROM categoria ORDER BY cat_id DESC";
+    db.query(SQL, (err, result) => {
+        if (err)
+            console.log(err);
+        else {
+            res.send(result);
+            //console.log(result);
+        }
+    });
+});
+
+app.get("/getDisciplinas", (req, res) => {
+    let SQL = "SELECT dis_nome FROM disciplina ORDER BY dis_id DESC";
     db.query(SQL, (err, result) => {
         if (err)
             console.log(err);

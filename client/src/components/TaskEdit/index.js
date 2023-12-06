@@ -12,7 +12,7 @@ import ConfirmEvent from '../../components/ConfirmEvent';
 
 const TaskEdit = () => {
     // Pegando useDataContext do contexto
-    const { isTaskEditVisible, listDataSelecionada, closeTaskEdit, currentIndex, isTaskConfirmEvent, showTaskConfirmEvent } = useCalendarContext();
+    const { isTaskEditVisible, listDataSelecionada, closeTaskEdit, currentIndex, isTaskConfirmEvent, showTaskConfirmEvent, convertIdCategoria, nameDisciplina } = useCalendarContext();
     console.log("Context - listDataSelecionada: ", listDataSelecionada);
 
     // State para guardar as informações das input
@@ -145,19 +145,26 @@ const TaskEdit = () => {
                     <Input type='text' bg='#fff' name='titleString' onChange={(e) => { handleChangeValues(e); setErro(""); }} defaultValue={values.titleString} ></Input>
                 </C.InputContent>
                 <C.InputContent>
-                    <C.AuxDiv>
-                        <C.Label>disciplina:</C.Label>
-                    </C.AuxDiv>
-                    <Input type='text' bg='#fff' name='disciplinaString' onChange={handleChangeValues} defaultValue={values.disciplinaString} ></Input>
+                    <C.Select name='disciplina' onChange={handleChangeValues}>
+                        <C.Option value='1' disabled selected>Disciplina</C.Option>
+                        {nameDisciplina.map((item, index) => (
+                            <C.Option key={index} value={index + 1}>
+                                {item.dis_nome}
+                            </C.Option>
+                        ))}
+                    </C.Select>
                 </C.InputContent>
                 <C.InputContent>
                     <C.AuxDiv>
                         <C.Label>tipo:</C.Label>
                     </C.AuxDiv>
-                    <C.Select name='tipoString' onChange={handleChangeValues} value={values.tipoString}>
-                        <C.Option value='atividade' >1</C.Option>
-                        <C.Option value='avaliação'>2</C.Option>
-                        <C.Option value='trabalho'>3</C.Option>
+                    <C.Select name='tipo' onChange={handleChangeValues}>
+                        <C.Option value='1' disabled selected>Tipo de atividade</C.Option>
+                        {convertIdCategoria.map((item, index) => (
+                            <C.Option key={index} value={index + 1}>
+                                {item.cat_nome}
+                            </C.Option>
+                        ))}
                     </C.Select>
                 </C.InputContent>
                 <C.InputContent>

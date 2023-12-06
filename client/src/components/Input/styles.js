@@ -5,15 +5,16 @@ export const Input = styled.input`
     outline: none;
     width: 90%;
 
-    border-radius: 2px;
+    background: #E7E7E7;
+
+    border-radius: 5px;
     border: none;
 
-    font-size: 1rem;
-    padding: 8px 7px;
+    font-size: 1.1rem;
+    padding: 15px 7px;
     text-align: start;
 
     color: #302e2e;
-
-    background-color: #ffdad7;
+    
     //border: 2px solid #f2293b;
 `;
