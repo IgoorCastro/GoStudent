@@ -147,7 +147,7 @@ export const DateInfoContent = styled.div`
     justify-content: top;
     align-items: center;
 
-    background: #cfcfcf;
+    background: #dddddd;
     //border: 1px solid blue;
 `;
 
@@ -159,7 +159,6 @@ export const AddTaskContent = styled.div`
 
     //border: 1px solid red;
 `;
-
 
 export const MessageContent = styled.div`
     width: 85%;

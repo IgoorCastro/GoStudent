@@ -13,23 +13,40 @@ import ConfirmEvent from '../../components/ConfirmEvent';
 const TaskEdit = () => {
     // Pegando useDataContext do contexto
     const { isTaskEditVisible, listDataSelecionada, closeTaskEdit, currentIndex, isTaskConfirmEvent, showTaskConfirmEvent, convertIdCategoria, nameDisciplina } = useCalendarContext();
-    console.log("Context - listDataSelecionada: ", listDataSelecionada);
+    //console.log("Context - listDataSelecionada: ", listDataSelecionada);
 
     // State para guardar as informações das input
     const [values, setValues] = useState({
-        id: listDataSelecionada[0].eve_id,
-        dataString: listDataSelecionada[0].eve_dataHora,
-        titleString: listDataSelecionada[0].eve_titulo,
-        disciplinaString: listDataSelecionada[0].dis_id,
-        tipoString: listDataSelecionada[0].cat_id,
-        observacaoString: listDataSelecionada[0].eve_descricao,
+        id: '',
+        dataString: '',
+        titleString: '',
+        disciplinaString: listDataSelecionada[currentIndex].dis_id,
+        tipoString: listDataSelecionada[currentIndex].cat_id,
+        observacaoString: '',
         // outros campos do formulário aqui
     });
-    console.log("--values: ", values);
+    //console.log("--values: ", values);
 
     const [lastListDataSelecionada, setLastListDataSelecionada] = useState();
     const [erro, setErro] = useState("");
     //onsole.log("dataString: ", values);
+
+    useEffect(() => { updateDateData() }, []);
+
+    const nomesDosMeses = [
+        'Jan',
+        'Fev',
+        'Mar',
+        'Abr',
+        'Mai',
+        'Jun',
+        'Jul',
+        'Ago',
+        'Set',
+        'Out',
+        'Nov',
+        'Dez',
+    ];
 
     const handleChangeValues = (event) => {
         const { name, value } = event.target;
@@ -44,13 +61,24 @@ const TaskEdit = () => {
             setErro("Título obrigatório");
             return;
         }
+        if (values.titleString.length > 100) {
+            setErro("Título deve ter no máximo 100 caracteres");
+            return;
+        }
+        if (values.observacaoString.length > 255) {
+            setErro("Observação deve ter no máximo 255 caracteres");
+            return;
+        }
 
         showTaskConfirmEvent();
     }
 
     const handleConfirmEdit = () => {
         const fragmentDate = values.dataString.split('/');
-        const dateToDb = fragmentDate[2] + '/' + fragmentDate[1] + '/' + fragmentDate[0];;
+        const dateToDb = fragmentDate[2] + '/' + fragmentDate[1] + '/' + fragmentDate[0];
+
+        console.log("dateToDb: ", dateToDb);
+
 
         Axios.put("http://localhost:3001/edit", {
             data: dateToDb,
@@ -93,18 +121,13 @@ const TaskEdit = () => {
                 observacaoString: listDataSelecionada[currentIndex].eve_descricao,
                 // outros campos do formulário aqui
             });
-            //alert("ALERT");
         }
+        //console.log("values update: ", values.tipoString);
     }
-
-    useEffect(() => { updateDateData() }, []);
 
     if (lastListDataSelecionada !== listDataSelecionada[0].eve_dataHora) {
         updateDateData();
     }
-
-
-
 
     const handleClickConfiNotif = () => {
         alert("handleClickConfiNotif");
@@ -112,6 +135,21 @@ const TaskEdit = () => {
 
     const handleClickExit = () => {
         closeTaskEdit();
+    }
+
+    const handleDay = (props) => {
+        const newData = props.slice(0, 10);
+
+        const data = new Date(newData);
+        const dia = data.getDate();
+        return dia + 1;
+    }
+    const handleMonth = (props) => {
+        const newData = props.slice(0, 10);
+
+        const data = new Date(newData);
+        const mes = data.getMonth();
+        return mes;
     }
 
     // ---------- LOG -----------
@@ -131,56 +169,62 @@ const TaskEdit = () => {
                         <FontAwesomeIcon icon={faBell} onClick={() => handleClickConfiNotif()} />
                     </C.IconsContent>
                 </C.TopIconsContent>
-                <C.TopAddContent>
-                    <C.DefaultA onClick={null}></C.DefaultA>
-                    <Title>EDITAR</Title>
-                    <C.DefaultA onClick={null}></C.DefaultA>
-                </C.TopAddContent>
+                <C.TopAddTitle>
+                    <Title>EDITAR REGISTRO</Title>
+                </C.TopAddTitle>
             </C.TopAddContainer>
+
             <C.MainAddCointainer>
-                <C.InputContent>
-                    <C.AuxDiv>
-                        <C.Label>título:</C.Label>
-                    </C.AuxDiv>
-                    <Input type='text' bg='#fff' name='titleString' onChange={(e) => { handleChangeValues(e); setErro(""); }} defaultValue={values.titleString} ></Input>
-                </C.InputContent>
-                <C.InputContent>
-                    <C.Select name='disciplina' onChange={handleChangeValues}>
-                        <C.Option value='1' disabled selected>Disciplina</C.Option>
-                        {nameDisciplina.map((item, index) => (
-                            <C.Option key={index} value={index + 1}>
-                                {item.dis_nome}
-                            </C.Option>
-                        ))}
-                    </C.Select>
-                </C.InputContent>
-                <C.InputContent>
-                    <C.AuxDiv>
-                        <C.Label>tipo:</C.Label>
-                    </C.AuxDiv>
-                    <C.Select name='tipo' onChange={handleChangeValues}>
-                        <C.Option value='1' disabled selected>Tipo de atividade</C.Option>
-                        {convertIdCategoria.map((item, index) => (
-                            <C.Option key={index} value={index + 1}>
-                                {item.cat_nome}
-                            </C.Option>
-                        ))}
-                    </C.Select>
-                </C.InputContent>
-                <C.InputContent>
-                    <C.AuxDiv>
-                        <C.Label>data:</C.Label>
-                    </C.AuxDiv>
-                    <Input type='text' bg='#fff' name='dataString' value={values.dataString}></Input>
-                </C.InputContent>
-                <C.InputContent>
-                    <C.AuxDiv>
-                        <C.Label>observação:</C.Label>
-                    </C.AuxDiv>
-                    <Input type='text' bg='#fff' name='observacaoString' onChange={handleChangeValues} defaultValue={values.observacaoString} ></Input>
-                </C.InputContent>
-                <LabelErro>{erro}</LabelErro>
-                <Button text='SALVAR' onClick={handleClickButton}></Button>
+                <C.InputContainer>
+                    <C.DateContainer>
+                        <C.DateContent>
+                            <C.DayLabel>{handleDay(listDataSelecionada[currentIndex].eve_dataHora)}</C.DayLabel>
+                            <C.MonthLabel>{nomesDosMeses[handleMonth(listDataSelecionada[currentIndex].eve_dataHora)]}</C.MonthLabel>
+                        </C.DateContent>
+                    </C.DateContainer>
+                    <C.InputContent>
+                        <C.AuxDiv>
+                            <C.Label>título:</C.Label>
+                        </C.AuxDiv>
+                        <Input type='text' bg='#fff' name='titleString' onChange={(e) => { handleChangeValues(e); setErro(""); }} defaultValue={values.titleString} ></Input>
+                    </C.InputContent>
+                    <C.InputContent>
+                        <C.AuxDiv>
+                            <C.Label>disciplina:</C.Label>
+                        </C.AuxDiv>
+                        <C.Select name='idDisciplina' onChange={handleChangeValues} defaultChecked={nameDisciplina.length + 1 - values.disciplinaString}>
+                            <C.Option value='1' disabled selected>Seleciona uma disciplina</C.Option>
+                            {nameDisciplina.map((item, index) => (
+                                <C.Option key={index} value={index + 1}>
+                                    {item.dis_nome}
+                                </C.Option>
+                            ))}
+                        </C.Select>
+                    </C.InputContent>
+                    <C.InputContent>
+                        <C.AuxDiv>
+                            <C.Label>tipo:</C.Label>
+                        </C.AuxDiv>
+                        <C.Select name='idTipo' onChange={handleChangeValues} defaultChecked={convertIdCategoria.length + 1 - values.tipoString}>
+                            <C.Option value='1' disabled selected>Tipo de atividade</C.Option>
+                            {convertIdCategoria.map((item, index) => (
+                                <C.Option key={index} value={index + 1}>
+                                    {item.cat_nome}
+                                </C.Option>
+                            ))}
+                        </C.Select>
+                    </C.InputContent>
+                    <C.InputContent>
+                        <C.AuxDiv>
+                            <C.Label>observação:</C.Label>
+                        </C.AuxDiv>
+                        <C.InputObs type='text' bg='#fff' name='observacaoString' onChange={handleChangeValues} defaultValue={values.observacaoString} ></C.InputObs>
+                    </C.InputContent>
+                </C.InputContainer>
+                <C.ButtonContainer>
+                    <LabelErro>{erro}</LabelErro>
+                    <Button text='SALVAR' onClick={handleClickButton}></Button>
+                </C.ButtonContainer>
             </C.MainAddCointainer>
         </C.AddContainer>
 

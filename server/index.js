@@ -27,13 +27,12 @@ app.post("/register", (req, res) => {
     const { data } = req.body;
     const { observacao } = req.body;
 
-    console.log("tipo: ", tipo);
-
-
     let SQL = "INSERT INTO agendaaluno (eve_id, alu_id, dis_id, cat_id, eve_titulo, eve_descricao, eve_dataHora) VALUES ( 0, 1, ?, ?, ?, ?, ?)";
     db.query(SQL, [disciplina, tipo, titulo, observacao, data], (err, result) => {
-        if (err)
+        if (err) {
+            res.send("--erro no registro: ", err)
             console.log(err);
+        }
     });
 });
 
@@ -42,7 +41,7 @@ app.get("/getDateData", (req, res) => {
     const { date } = req.query;
     //console.log("Data db: " + date);
 
-    let SQL = "SELECT *, ctg.cat_nome  FROM agendaaluno INNER JOIN categoria ctg USING (cat_id) WHERE eve_dataHora = ?";
+    let SQL = "SELECT *, ctg.cat_nome, dsc.dis_nome  FROM agendaaluno INNER JOIN categoria ctg USING (cat_id) INNER JOIN disciplina dsc USING (dis_id) WHERE eve_dataHora = ?";
     db.query(SQL, [date], (err, result) => {
         if (err)
             console.log(err);

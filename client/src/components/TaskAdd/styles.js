@@ -22,7 +22,7 @@ export const MainAddContainer = styled.div`
     align-items: center;
     justify-content: start;
 
-    //border: 1px solid red;
+    //border: 1px solid purple;
 `;
 
 export const TopAddContainer = styled.div`
@@ -89,9 +89,11 @@ export const IconsContent = styled.div`
 
 export const ButtonContainer = styled.div`
     width: 100%;
-    height: 20%;
+    height: 30%;
+    
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;   
 
     gap: 9px;
@@ -101,7 +103,7 @@ export const ButtonContainer = styled.div`
 
 export const InputContainer = styled.div`
     width: 100%;
-    height: 75%;
+    height: 70%;
     display: flex;
     flex-direction: column;
     align-items: center;  
@@ -121,14 +123,52 @@ export const InputContent = styled.div`
     //border: 1px solid red;
 `;
 
-export const DateContent = styled.div`
-    width: 40%;
+export const DateContainer = styled.div`
+    width: 80%;
     height: 20%;
 
     display: flex;
     flex-direction: column;
     align-items: center;   
     justify-content: start;
+
+    //border: 1px solid red;
+`;
+
+export const DateContent = styled.div`
+    width: 20%;
+    height: 82%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;   
+    justify-content: start;
+
+    background: rgba(255,255,255,0.8);
+
+    border-radius: 15px;
+    box-shadow: 0 0 0 3px rgba(15,76,117,0.1);
+
+    //border: 1px solid green;
+`;
+
+export const DayLabel = styled.label`
+    font-size: 1.7rem;
+    font-weight: 700;
+    text-align: center;
+
+    color: #1B262C;
+
+    //border: 1px solid red;
+`;
+export const MonthLabel = styled.label`
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-align: center;
+
+    text-transform: uppercase;
+
+    color: #0F4C75;
 
     //border: 1px solid red;
 `;
@@ -147,7 +187,7 @@ export const Select = styled.select`
     border: none;
 
     font-size: 1.1rem;
-    padding: 15px 7px;
+    padding: 12px 7px;
     text-align: start;
 
     color: #302e2e;
@@ -161,11 +201,13 @@ export const InputObs = styled.textarea`
     max-width: 100%;
     height: 100%;
 
+    font-family: 'Roboto', sans-serif;
+
     border-radius: 5px;
     border: none;
 
     font-size: 1.1rem;
-    padding: 15px 7px;
+    padding: 12px 7px;
     text-align: start;
 
     color: #302e2e;
@@ -178,7 +220,30 @@ export const InputObs = styled.textarea`
     overflow-y: auto; /* Adiciona barra de rolagem vertical */
     resize: none; /* Impede o redimensionamento do textarea pelo usuário */
     
-    /* Estilos adicionais, se necessário */
+    overflow: hidden;
+    overflow-y: auto;
+    /* ===== Scrollbar CSS ===== */
+    /* Firefox */
+    & {
+        scrollbar-width: auto;
+        scrollbar-color: #3282b8 #bbe1fa;
+    }
+
+    /* Chrome, Edge, and Safari */
+    &::-webkit-scrollbar {
+        width: 2px;
+    }
+
+    // &::-webkit-scrollbar-track {
+    //     background: #bbe1fa;
+    // }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: #3282b8;
+        border-radius: 10px;
+        border: 0px solid #ffffff;
+    }
+    //border: 1px solid red;
 `;
 
 export const Title = styled.h2`
@@ -193,20 +258,3 @@ export const Title = styled.h2`
     
 `;
 
-export const LabelDate = styled.h2`
-    width: 90%;
-
-    border-radius: 5px;
-    border: none;
-
-    background: #fff;
-    color: #0F4C75;
-
-    font-size: 1.2rem;
-    padding: 15px 7px;
-    text-align: center;    
-
-    box-shadow: 9px 10px 5px -7px rgba(0,0,0,0.2);
-
-    //border: 1px solid blue;
-`;

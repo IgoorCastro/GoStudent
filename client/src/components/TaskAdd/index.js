@@ -23,7 +23,21 @@ const AddTask = () => {
         titulo: '',
         observacao: '',
     });
-    console.log("--values: ", values);
+
+    const nomesDosMeses = [
+        'Jan',
+        'Fev',
+        'Mar',
+        'Abr',
+        'Mai',
+        'Jun',
+        'Jul',
+        'Ago',
+        'Set',
+        'Out',
+        'Nov',
+        'Dez',
+    ];
 
     const convertDate = (date) => {
         //console.log("E-convertDate: " + date);
@@ -99,6 +113,21 @@ const AddTask = () => {
         closeTaskAdd();
     }
 
+    const handleDay = (props) => {
+        const newData = props.slice(0, 10);
+
+        const data = new Date(newData);
+        const dia = data.getDate();
+        return dia;
+    }
+    const handleMonth = (props) => {
+        const newData = props.slice(0, 10);
+
+        const data = new Date(newData);
+        const mes = data.getMonth();
+        return mes;
+    }
+
     // ---------- LOG -----------
     //console.log("Data selecionada: ", dataString);
     //console.log("Data selecionada: ", dataSelecionada);
@@ -117,15 +146,18 @@ const AddTask = () => {
                     </C.IconsContent>
                 </C.TopIconContainer>
                 <C.TopAddTitle>
-                    <Title>REGISTRAR</Title>
+                    <Title>REGISTRAR ATIVIDADE</Title>
                 </C.TopAddTitle>
             </C.TopAddContainer>
 
             <C.MainAddContainer>
                 <C.InputContainer>
-                    <C.DateContent>
-                        <C.LabelDate>{convertDate(dataSelecionada)}</C.LabelDate>
-                    </C.DateContent>
+                    <C.DateContainer>
+                        <C.DateContent>
+                            <C.DayLabel>{handleDay(dataSelecionada)}</C.DayLabel>
+                            <C.MonthLabel>{nomesDosMeses[handleMonth(dataSelecionada)]}</C.MonthLabel>
+                        </C.DateContent>
+                    </C.DateContainer>
                     <C.InputContent>
                         <Input type='text' bg='#fff' name='titulo' placeholder='Título' onChange={(e) => { handleChangeValues(e); setErro(""); }} ></Input>
                     </C.InputContent>

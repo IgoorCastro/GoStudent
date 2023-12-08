@@ -9,7 +9,6 @@ import Label from '../../components/Label';
 
 const TaskWeekly = () => {
     const [weeklyList, setWeeklyList] = useState({});
-    console.log("weeklyList: ", weeklyList);
     const { isTaskWeeklyVisible } = useCalendarContext();
 
     const nomesDosMeses = [

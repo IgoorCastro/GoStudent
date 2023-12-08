@@ -63,7 +63,7 @@ export const DataProvider = ({ children }) => {
 
     const setData = (data) => {
         setDataSelecionada(data);
-        console.log("(context 'setData': ", dataSelecionada);
+        //console.log("(context 'setData': ", dataSelecionada);
     }
 
     const showTaskEdit = () => {

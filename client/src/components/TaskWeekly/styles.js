@@ -36,7 +36,6 @@ export const MainContainer = styled.div`
 
     gap: 1.3rem;
 
-    overflow-y: auto;
 
     //border: 1px solid purple;
 `;
@@ -215,6 +214,7 @@ export const InfoContainer = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: space-around;
+    
 
     //border: 1px solid blue;
 `;
@@ -240,6 +240,14 @@ export const TitleLabel = styled.label`
     font-size: 1.2rem;
     text-align: center;
     font-weight: 600;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Define o número de linhas que o texto ocupará */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Adiciona reticências para indicar texto cortado */
+    white-space: normal; /* Força quebra de linha automática */
+    max-width: 80%; /* Respeita a largura do container */
 
     color: #1B262C;
 

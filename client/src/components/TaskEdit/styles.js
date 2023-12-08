@@ -8,61 +8,58 @@ export const AddContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-
-    border-radius: 15px;
-
+    justify-content: center;
 
     //border: 1px solid red;
 `;
 
 export const MainAddCointainer = styled.div`
     width: 100%;
+    height: 77%;
 
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-around;
+    justify-content: start;
 
-    gap: 15px;
-
-    padding: 20px 0;
-    //border: 1px solid red;
+    //border: 1px solid purple;
 `;
 
 export const TopAddContainer = styled.div`
-    width: 100%;
-    border-radius: 15px;
+     width: 100%;
+    height: 23%;
+    
     text-align: center;
 
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    
-    padding: 20px 0;
-
-    //background: #FB6E66;
 
     //border: 1px solid blue;
 `;
 
-export const TopAddContent = styled.div`
+export const TopAddTitle = styled.div`
     width: 90%;
+    height: 40%;
+
     display: flex;
-    align-items: center;
+    align-items: start;
     text-align: center;
-    justify-content: space-between;
+    justify-content: center;
 
     //border: 1px solid red;
 `;
 
 export const TopIconsContent = styled.div`
     width: 90%;
-
+    height: 60%;
+    
     display: flex;
     align-items: center;
-    text-align: center;
     justify-content: space-between;
+
+    font-size: 2rem;
 
     //border: 1px solid red;
 `;
@@ -85,19 +82,79 @@ export const IconsContent = styled.div`
     
     &:hover {
         background: #a9a9a9;
-        color: #E7E7E7;
     }
 
     //border: 1px solid red;
 `;
 
+export const InputContainer = styled.div`
+    width: 100%;
+    height: 70%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;  
+
+    //border: 1px solid blue;
+`;
+
 export const InputContent = styled.div`
     width: 90%;
+    height: 20%;
+
     display: flex;
     flex-direction: column;
     align-items: center;   
+    justify-content: start;
 
-    gap: 9px;
+    //border: 1px solid red;
+`;
+
+export const DateContainer = styled.div`
+    width: 80%;
+    height: 20%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;   
+    justify-content: start;
+
+    //border: 1px solid red;
+`;
+
+export const DateContent = styled.div`
+    width: 20%;
+    height: 82%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;   
+    justify-content: start;
+
+    background: rgba(255,255,255,0.8);
+
+    border-radius: 15px;
+    box-shadow: 0 0 0 3px rgba(15,76,117,0.1);
+
+    //border: 1px solid green;
+`;
+
+export const DayLabel = styled.label`
+    font-size: 1.7rem;
+    font-weight: 700;
+    text-align: center;
+
+    color: #1B262C;
+
+    //border: 1px solid red;
+`;
+export const MonthLabel = styled.label`
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-align: center;
+
+    text-transform: uppercase;
+
+    color: #0F4C75;
 
     //border: 1px solid red;
 `;
@@ -123,16 +180,77 @@ export const Select = styled.select`
     border-radius: 2px;
     border: none;
 
-    font-size: 1rem;
-    padding: 8px 7px;
+    font-size: 1.1rem;
+    padding: 12px 7px;
     text-align: start;
+
+    color: #302e2e;
 
     //border: 1px solid red;
 `;
 
-export const DefaultA = styled.a`
-    text-decoration: none;
-    cursor: pointer;
+export const InputObs = styled.textarea`
+    outline: none;
+    width: 90%;
+    max-width: 100%;
+    height: 100%;
+
+    font-family: 'Roboto', sans-serif;
+
+    border-radius: 5px;
+    border: none;
+
+    font-size: 1.1rem;
+    padding: 12px 7px;
+    text-align: start;
+
+    color: #302e2e;
+
+    /* Quebra de linha ao atingir a largura máxima */
+    word-wrap: break-word;
+
+    /* Adiciona barra de rolagem vertical quando a altura exceder o limite */
+    max-height: 200px; /* Altura máxima antes do scrollbar aparecer */
+    overflow-y: auto; /* Adiciona barra de rolagem vertical */
+    resize: none; /* Impede o redimensionamento do textarea pelo usuário */
+    
+    overflow: hidden;
+    overflow-y: auto;
+    /* ===== Scrollbar CSS ===== */
+    /* Firefox */
+    & {
+        scrollbar-width: auto;
+        scrollbar-color: #3282b8 #bbe1fa;
+    }
+
+    /* Chrome, Edge, and Safari */
+    &::-webkit-scrollbar {
+        width: 2px;
+    }
+
+    // &::-webkit-scrollbar-track {
+    //     background: #bbe1fa;
+    // }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: #3282b8;
+        border-radius: 10px;
+        border: 0px solid #ffffff;
+    }
+`;
+
+export const ButtonContainer = styled.div`
+    width: 100%;
+    height: 30%;
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;   
+
+    gap: 9px;
+
+    //border: 1px solid green;
 `;
 
 export const Label = styled.label`
@@ -151,6 +269,5 @@ export const Title = styled.h2`
     //border: 1px solid blue;
 
     height: min-content;
-    text-align: center;
-    
+    text-align: center;    
 `;
