@@ -12,7 +12,7 @@ import LabelErro from '../../components/LabelErro';
 
 const AddTask = () => {
     // Pegando useDataContext do contexto
-    const { convertIdCategoria, nameDisciplina, closeTaskAdd, dataSelecionada, isTaskConfirmEvent, showTaskConfirmEvent } = useCalendarContext();
+    const { listNameCategoria, listNameDisciplina, closeTaskAdd, dataSelecionada, isTaskConfirmEvent, showTaskConfirmEvent } = useCalendarContext();
     const [erro, setErro] = useState("");
 
     // State para guardar as informações das input
@@ -23,6 +23,7 @@ const AddTask = () => {
         titulo: '',
         observacao: '',
     });
+    console.log("values: ", values);
 
     const nomesDosMeses = [
         'Jan',
@@ -62,7 +63,6 @@ const AddTask = () => {
         }));
     }, [dataSelecionada]);
 
-
     const handleChangeValues = (value) => {
         // console.log("value.target.name: ", value.target.name);
         // console.log("value.target.value: ", value.target.value);
@@ -89,21 +89,34 @@ const AddTask = () => {
             var data = dataSelecionada;
         }
 
+        // request de registro
         Axios.post("http://localhost:3001/register", {
             titulo: values.titulo,
-            disciplina: values.disciplina,
-            tipo: values.tipo,
+            disciplina: listNameDisciplina.length + 1 - values.disciplina,
+            tipo: listNameCategoria.length + 1 - values.tipo,
             data: values.data,
             observacao: values.observacao
         }).then((response) => {
-            console.log("--response: ", response);
+            alert("Registro concluidos");
+            closeTaskAdd();
+            //console.log("--response: ", response.data);
+        }).catch((e) => {
+            // tratamento de erro 'requests, response e configuração'
+            if (e.response) {
+                setErro("erro ", e.response.status, " - contate um administrador!");
+                console.error("--erro status:", e.response.status);
+                console.error("--dados do erro:", e.response.data);
+            } else if (e.request) {
+                // requisição feita, mas não houve resposta do servidor
+                setErro("erro ", e.request.status, " - contate um administrador!");
+                console.e("Sem resposta do servidor:", e.request);
+            } else {
+                // erro ao configurar a requisição
+                setErro("erro ao configurar a requisição - contate um administrador!");
+                console.error("--erro requisição:", e.message);
+            }
         });
-
-        alert("Registro concluidos");
-        closeTaskAdd();
     }
-
-
 
     const handleClickConfiNotif = () => {
         alert("handleClickConfiNotif");
@@ -164,7 +177,7 @@ const AddTask = () => {
                     <C.InputContent>
                         <C.Select name='disciplina' onChange={handleChangeValues}>
                             <C.Option value='1' disabled selected>Disciplina</C.Option>
-                            {nameDisciplina.map((item, index) => (
+                            {listNameDisciplina.map((item, index) => (
                                 <C.Option key={index} value={index + 1}>
                                     {item.dis_nome}
                                 </C.Option>
@@ -174,7 +187,7 @@ const AddTask = () => {
                     <C.InputContent>
                         <C.Select name='tipo' onChange={handleChangeValues}>
                             <C.Option value='1' disabled selected>Tipo de atividade</C.Option>
-                            {convertIdCategoria.map((item, index) => (
+                            {listNameCategoria.map((item, index) => (
                                 <C.Option key={index} value={index + 1}>
                                     {item.cat_nome}
                                 </C.Option>

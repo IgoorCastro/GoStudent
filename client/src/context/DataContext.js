@@ -19,8 +19,8 @@ export const DataProvider = ({ children }) => {
     const [isTaskAddVisible, setIsTaskAddVisible] = useState(false);
     const [isTaskWeeklyVisible, setIsTaskWeeklVisible] = useState(true);
     const [isTaskEditVisible, setIsTaskEditVisible] = useState(null);
-    const [convertIdCategoria, setconvertIdCategoria] = useState();
-    const [nameDisciplina, setNameDisciplina] = useState();
+    const [listNameCategoria, setListNameCategoria] = useState();
+    const [listNameDisciplina, setListNameDisciplina] = useState();
 
     // Contexto de confirmação de evento
     const [isTaskConfirmEvent, setIsTaskConfirmEvent] = useState(false);
@@ -40,18 +40,18 @@ export const DataProvider = ({ children }) => {
             setCurrentIndex(0);
     }
 
-    const setNameDscp = (listDisciplina) => {
+    const setListNameDscp = (listDisciplina) => {
         if (listDisciplina)
-            setNameDisciplina(listDisciplina);
+            setListNameDisciplina(listDisciplina);
         else
-            setNameDisciplina("Registre categorias no DB!");
+            setListNameDisciplina("Registre categorias no DB!");
     }
 
-    const setConvertIdCtg = (listCategoria) => {
+    const setListNameCtg = (listCategoria) => {
         if (listCategoria)
-            setconvertIdCategoria(listCategoria);
+            setListNameCategoria(listCategoria);
         else
-            setconvertIdCategoria("Registre categorias no DB!");
+            setListNameCategoria("Registre categorias no DB!");
     }
 
     const setListData = (listData) => {
@@ -122,8 +122,8 @@ export const DataProvider = ({ children }) => {
         <DataContext.Provider value={{
             listDataSelecionada, setListData, dataSelecionada, setData, isTaskInfoVisible, toggleComponentVisibility,
             isTaskAddVisible, showAddTask, showTaskInfo, closeTaskInfo, closeTaskAdd, isTaskWeeklyVisible, showWeeklyTask, closeTaskWeekly,
-            isTaskEditVisible, showTaskEdit, closeTaskEdit, setConvertIdCtg, convertIdCategoria, setCurrentIndx, currentIndex,
-            isTaskConfirmEvent, showTaskConfirmEvent, closeTaskConfirmEvent, nameDisciplina, setNameDscp
+            isTaskEditVisible, showTaskEdit, closeTaskEdit, setListNameCtg, listNameCategoria, setCurrentIndx, currentIndex,
+            isTaskConfirmEvent, showTaskConfirmEvent, closeTaskConfirmEvent, listNameDisciplina, setListNameDscp
         }}>
             {children}
         </DataContext.Provider>

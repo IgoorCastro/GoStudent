@@ -71,6 +71,18 @@ const Calendario = () => {
             }
         }).then((response) => {
             setListData(response.data);
+        }).catch((e) => {
+            // tratamento de erro 'requests, response e configuração'
+            if (e.response) {
+                console.error("--erro status:", e.response.status);
+                console.error("--dados do erro:", e.response.data);
+            } else if (e.request) {
+                // requisição feita, mas não houve resposta do servidor
+                console.e("Sem resposta do servidor:", e.request);
+            } else {
+                // erro ao configurar a requisição
+                console.error("--erro requisição:", e.message);
+            }
         });
     };
 
@@ -125,6 +137,18 @@ const Calendario = () => {
         Axios.get("http://localhost:3001/testData", {
         }).then((response) => {
             setColorControl(response.data);
+        }).catch((e) => {
+            // tratamento de erro 'requests, response e configuração'
+            if (e.response) {
+                console.error("--erro status:", e.response.status);
+                console.error("--dados do erro:", e.response.data);
+            } else if (e.request) {
+                // requisição feita, mas não houve resposta do servidor
+                console.e("Sem resposta do servidor:", e.request);
+            } else {
+                // erro ao configurar a requisição
+                console.error("--erro requisição:", e.message);
+            }
         });
 
     }

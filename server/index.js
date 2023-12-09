@@ -29,10 +29,15 @@ app.post("/register", (req, res) => {
 
     let SQL = "INSERT INTO agendaaluno (eve_id, alu_id, dis_id, cat_id, eve_titulo, eve_descricao, eve_dataHora) VALUES ( 0, 1, ?, ?, ?, ?, ?)";
     db.query(SQL, [disciplina, tipo, titulo, observacao, data], (err, result) => {
+        console.log("------- register -------")
         if (err) {
-            res.send("--erro no registro: ", err)
             console.log(err);
+            res.status(500).send("Erro interno no servidor");
+            return;
         }
+        console.log(">registro concluido!");
+        res.status(200).send("Registro concluído com sucesso");
+        console.log("------------------------");
     });
 });
 
@@ -43,12 +48,15 @@ app.get("/getDateData", (req, res) => {
 
     let SQL = "SELECT *, ctg.cat_nome, dsc.dis_nome  FROM agendaaluno INNER JOIN categoria ctg USING (cat_id) INNER JOIN disciplina dsc USING (dis_id) WHERE eve_dataHora = ?";
     db.query(SQL, [date], (err, result) => {
-        if (err)
+        console.log("------- getDateData -------")
+        if (err) {
             console.log(err);
-        else {
-            res.send(result);
-            console.log(">>getDateData: ", result);
+            res.status(500).send("Erro interno no servidor");
+            return;
         }
+        console.log(">select concluido!");
+        res.send(result);
+        console.log("--------------------------");
     });
 });
 
@@ -61,12 +69,15 @@ app.get("/getDateTaskWeekly", (req, res) => {
 
     let SQL = "SELECT eve_dataHora, eve_titulo, eve_descricao FROM agendaaluno WHERE eve_dataHora BETWEEN ? AND ? ORDER BY eve_dataHora ASC";
     db.query(SQL, [date, lastDate], (err, result) => {
-        if (err)
+        console.log("------- getDateTaskWeekly -------")
+        if (err) {
             console.log(err);
-        else {
-            res.send(result);
-            //console.log(result);
+            res.status(500).send("Erro interno no servidor");
+            return;
         }
+        console.log(">select concluido!");
+        res.send(result);
+        console.log("---------------------------------");
     });
 
 });
@@ -77,36 +88,45 @@ app.get("/testData", (req, res) => {
 
     let SQL = "SELECT eve_dataHora FROM agendaaluno ORDER BY eve_dataHora";
     db.query(SQL, (err, result) => {
-        if (err)
+        console.log("------- testData -------")
+        if (err) {
             console.log(err);
-        else {
-            res.send(result);
-            //console.log(result);
+            res.status(500).send("Erro interno no servidor");
+            return;
         }
+        console.log(">select concluido!");
+        res.send(result);
+        console.log("------------------------");
     });
 });
 
 app.get("/getCategorias", (req, res) => {
     let SQL = "SELECT cat_nome FROM categoria ORDER BY cat_id DESC";
     db.query(SQL, (err, result) => {
-        if (err)
+        console.log("------- getCategorias -------")
+        if (err) {
             console.log(err);
-        else {
-            res.send(result);
-            //console.log(result);
+            res.status(500).send("Erro interno no servidor");
+            return;
         }
+        console.log(">select concluido!");
+        res.send(result);
+        console.log("-----------------------------");
     });
 });
 
 app.get("/getDisciplinas", (req, res) => {
     let SQL = "SELECT dis_nome FROM disciplina ORDER BY dis_id DESC";
     db.query(SQL, (err, result) => {
-        if (err)
+        console.log("------- getDisciplinas -------")
+        if (err) {
             console.log(err);
-        else {
-            res.send(result);
-            //console.log(result);
+            res.status(500).send("Erro interno no servidor");
+            return;
         }
+        console.log(">select concluido!");
+        res.send(result);
+        console.log("------------------------------");
     });
 });
 
@@ -118,14 +138,19 @@ app.put("/edit", (req, res) => {
     const { observacao } = req.body;
     const { id } = req.body;
 
-    //console.log("Edit ID: ", id);
+    console.log("req: ", req.body);
 
     let SQL = "UPDATE agendaaluno SET dis_id = ?, cat_id = ?, eve_titulo = ?, eve_descricao = ?, eve_dataHora = ? WHERE eve_id = ?";
     db.query(SQL, [disciplina, tipo, titulo, observacao, data, id], (err, result) => {
-        if (err)
-            console.log(err);
-        else
-            res.send(result);
+        console.log("------- update -------")
+        if (err) {
+            console.log(">", err);
+            res.status(500).send("Erro interno no servidor");
+            return;
+        }
+        console.log(">update concluido!");
+        res.status(200).send("Update concluído com sucesso");
+        console.log("----------------------");
     });
 });
 
@@ -134,10 +159,14 @@ app.delete("/delete/:eve_id", (req, res) => {
 
     let SQL = "DELETE FROM agendaaluno WHERE eve_id = ?";
     db.query(SQL, [eve_id], (err, resul) => {
-        if (err)
-            console.log(err);
-        else
-            res.send(resul);
+        console.log("------- delete -------")
+        if (err) {
+            console.log(">", err);
+            res.status(500).send("Erro interno no servidor");
+            return;
+        }
+        console.log(">delete concluido!");
+        res.status(200).send("Delete concluído com sucesso");
     });
 });
 

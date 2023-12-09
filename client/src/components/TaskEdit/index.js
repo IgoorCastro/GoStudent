@@ -12,24 +12,25 @@ import ConfirmEvent from '../../components/ConfirmEvent';
 
 const TaskEdit = () => {
     // Pegando useDataContext do contexto
-    const { isTaskEditVisible, listDataSelecionada, closeTaskEdit, currentIndex, isTaskConfirmEvent, showTaskConfirmEvent, convertIdCategoria, nameDisciplina } = useCalendarContext();
+    const { isTaskEditVisible, listDataSelecionada, closeTaskEdit, currentIndex, isTaskConfirmEvent, showTaskConfirmEvent,
+        listNameCategoria, listNameDisciplina } = useCalendarContext();
     //console.log("Context - listDataSelecionada: ", listDataSelecionada);
 
     // State para guardar as informações das input
     const [values, setValues] = useState({
         id: '',
+        idDisciplina: listDataSelecionada[currentIndex].dis_id,
+        idTipo: listDataSelecionada[currentIndex].cat_id,
         dataString: '',
         titleString: '',
-        disciplinaString: listDataSelecionada[currentIndex].dis_id,
-        tipoString: listDataSelecionada[currentIndex].cat_id,
         observacaoString: '',
         // outros campos do formulário aqui
     });
-    //console.log("--values: ", values);
+    console.log("--values: ", values);
 
     const [lastListDataSelecionada, setLastListDataSelecionada] = useState();
     const [erro, setErro] = useState("");
-    //onsole.log("dataString: ", values);
+    // console.log(">dataString: ", );
 
     useEffect(() => { updateDateData() }, []);
 
@@ -77,18 +78,37 @@ const TaskEdit = () => {
         const fragmentDate = values.dataString.split('/');
         const dateToDb = fragmentDate[2] + '/' + fragmentDate[1] + '/' + fragmentDate[0];
 
-        console.log("dateToDb: ", dateToDb);
+        //console.log("'handleConfirmEdit' values: ", values);
 
 
         Axios.put("http://localhost:3001/edit", {
             data: dateToDb,
             titulo: values.titleString,
-            disciplina: values.disciplinaString,
-            tipo: values.tipoString,
+            disciplina: listNameDisciplina.length + 1 - values.idDisciplina,
+            tipo: listNameCategoria.length + 1 - values.idTipo,
             observacao: values.observacaoString,
             id: values.id,
+        }).then((response) => {
+            alert("Edit concluidos");
+            console.log("--response: ", response.data);
+            closeTaskEdit();
+        }).catch((e) => {
+            // tratamento de erro 'requests, response e configuração'
+            if (e.response) {
+                setErro("erro ", e.response.status, " - contate um administrador!");
+                console.error("--erro status:", e.response.status);
+                console.error("--dados do erro:", e.response.data);
+            } else if (e.request) {
+                // requisição feita, mas não houve resposta do servidor
+                setErro("erro ", e.request.status, " - contate um administrador!");
+                console.e("Sem resposta do servidor:", e.request);
+            } else {
+                // erro ao configurar a requisição
+                setErro("erro ao configurar a requisição - contate um administrador!");
+                console.error("--erro requisição:", e.message);
+            }
+            closeTaskEdit();
         });
-        alert("Alteração concluida");
         closeTaskEdit();
     }
 
@@ -105,27 +125,30 @@ const TaskEdit = () => {
         // Formatar para o padrão dd/mm/yyyy
         const dataString = `${dia}/${mes}/${ano}`;
 
-        console.log("convertDate: " + dataString);
+        //console.log("convertDate: " + dataString);
         return dataString;
     }
 
     const updateDateData = () => {
+
         setLastListDataSelecionada(listDataSelecionada[currentIndex].eve_dataHora);
         if (Array.isArray(listDataSelecionada) && isTaskEditVisible) {
+            console.log("---------- update data ----------");
             setValues({
                 id: listDataSelecionada[currentIndex].eve_id,
                 dataString: convertDate(listDataSelecionada[currentIndex].eve_dataHora),
                 titleString: listDataSelecionada[currentIndex].eve_titulo,
-                disciplinaString: listDataSelecionada[currentIndex].dis_id,
-                tipoString: listDataSelecionada[currentIndex].cat_id,
+                idDisciplina: listDataSelecionada[currentIndex].dis_id,
+                idTipo: listDataSelecionada[currentIndex].cat_id,
                 observacaoString: listDataSelecionada[currentIndex].eve_descricao,
                 // outros campos do formulário aqui
             });
         }
-        //console.log("values update: ", values.tipoString);
+        //console.log("values update: ", values);
     }
 
     if (lastListDataSelecionada !== listDataSelecionada[0].eve_dataHora) {
+        console.log(lastListDataSelecionada !== listDataSelecionada[0].eve_dataHora);
         updateDateData();
     }
 
@@ -192,9 +215,9 @@ const TaskEdit = () => {
                         <C.AuxDiv>
                             <C.Label>disciplina:</C.Label>
                         </C.AuxDiv>
-                        <C.Select name='idDisciplina' onChange={handleChangeValues} defaultChecked={nameDisciplina.length + 1 - values.disciplinaString}>
-                            <C.Option value='1' disabled selected>Seleciona uma disciplina</C.Option>
-                            {nameDisciplina.map((item, index) => (
+                        <C.Select name='idDisciplina' onChange={handleChangeValues} defaultValue={listNameDisciplina.length + 1 - values.idDisciplina}>
+                            <C.Option value='0' disabled selected>Seleciona uma disciplina</C.Option>
+                            {listNameDisciplina.map((item, index) => (
                                 <C.Option key={index} value={index + 1}>
                                     {item.dis_nome}
                                 </C.Option>
@@ -205,9 +228,9 @@ const TaskEdit = () => {
                         <C.AuxDiv>
                             <C.Label>tipo:</C.Label>
                         </C.AuxDiv>
-                        <C.Select name='idTipo' onChange={handleChangeValues} defaultChecked={convertIdCategoria.length + 1 - values.tipoString}>
-                            <C.Option value='1' disabled selected>Tipo de atividade</C.Option>
-                            {convertIdCategoria.map((item, index) => (
+                        <C.Select name='idTipo' onChange={handleChangeValues} defaultValue={listNameCategoria.length + 1 - values.idTipo}>
+                            <C.Option value='0' disabled selected>Tipo de atividade</C.Option>
+                            {listNameCategoria.map((item, index) => (
                                 <C.Option key={index} value={index + 1}>
                                     {item.cat_nome}
                                 </C.Option>

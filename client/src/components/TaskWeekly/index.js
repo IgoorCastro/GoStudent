@@ -5,7 +5,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
 import { useCalendarContext } from '../../context/DataContext';
 import Title from '../../components/Title';
-import Label from '../../components/Label';
 
 const TaskWeekly = () => {
     const [weeklyList, setWeeklyList] = useState({});
@@ -63,7 +62,19 @@ const TaskWeekly = () => {
                 }
             }).then((response) => {
                 setWeeklyList(response.data);
-                //console.log("response: ", response);
+                console.log("response: ", response);
+            }).catch((e) => {
+                // tratamento de erro 'requests, response e configuração'
+                if (e.response) {
+                    console.error("--erro status:", e.response.status);
+                    console.error("--dados do erro:", e.response.data);
+                } else if (e.request) {
+                    // requisição feita, mas não houve resposta do servidor
+                    console.e("Sem resposta do servidor:", e.request);
+                } else {
+                    // erro ao configurar a requisição
+                    console.error("--erro requisição:", e.message);
+                }
             });
         }
     }, []);

@@ -16,19 +16,43 @@ const Home = () => {
     const [selectedIcon, setSelectedIcon] = useState(false);
 
     // Contexto para controle da renderização do component 'AddTask'
-    const { showAddTask, isTaskInfoVisible, isTaskAddVisible, isTaskWeeklyVisible, isTaskEditVisible, setConvertIdCtg, setNameDscp } = useCalendarContext();
+    const { showAddTask, isTaskInfoVisible, isTaskAddVisible, isTaskWeeklyVisible, isTaskEditVisible, setListNameCtg, setListNameDscp } = useCalendarContext();
 
     useEffect(() => {
         Axios.get("http://localhost:3001/getCategorias", {
         }).then((response) => {
-            setConvertIdCtg(response.data);
+            setListNameCtg(response.data);
             //console.log("--response: ", response);
+        }).catch((e) => {
+            // tratamento de erro 'requests, response e configuração'
+            if (e.response) {
+                console.error("--erro status:", e.response.status);
+                console.error("--dados do erro:", e.response.data);
+            } else if (e.request) {
+                // requisição feita, mas não houve resposta do servidor
+                console.e("Sem resposta do servidor:", e.request);
+            } else {
+                // erro ao configurar a requisição
+                console.error("--erro requisição:", e.message);
+            }
         });
 
         Axios.get("http://localhost:3001/getDisciplinas", {
         }).then((response) => {
-            setNameDscp(response.data);
-            console.log("--response: ", response);
+            setListNameDscp(response.data);
+            console.log("--response: ", response.data);
+        }).catch((e) => {
+            // tratamento de erro 'requests, response e configuração'
+            if (e.response) {
+                console.error("--erro status:", e.response.status);
+                console.error("--dados do erro:", e.response.data);
+            } else if (e.request) {
+                // requisição feita, mas não houve resposta do servidor
+                console.e("Sem resposta do servidor:", e.request);
+            } else {
+                // erro ao configurar a requisição
+                console.error("--erro requisição:", e.message);
+            }
         });
     }, []);
 

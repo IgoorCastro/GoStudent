@@ -62,7 +62,7 @@ const TaskInfo = () => {
 
     var dataString = null, titleString = null, disciplinaString = null, tipoString = null, observacaoString = null;
     if (listDataSelecionada && listDataSelecionada.length > 1) {
-        console.log("---TaskInfo: ", listDataSelecionada);
+        //console.log("---TaskInfo: ", listDataSelecionada);
 
         titleString = listDataSelecionada[currentIndex].eve_titulo;
 
@@ -110,9 +110,22 @@ const TaskInfo = () => {
     }
 
     const handleConfirmDelet = () => {
-        Axios.delete(`http://localhost:3001/delete/${listDataSelecionada[currentIndex].eve_id}`);
-        alert("Registro deletado");
-        closeTaskInfo();
+        Axios.delete(`http://localhost:3001/delete/${listDataSelecionada[currentIndex].eve_id}`).then(() => {
+            alert("Registro deletado");
+            closeTaskInfo();
+        }).catch((e) => {
+            // tratamento de erro 'requests, response e configuração'
+            if (e.response) {
+                console.error("--erro status:", e.response.status);
+                console.error("--dados do erro:", e.response.data);
+            } else if (e.request) {
+                // requisição feita, mas não houve resposta do servidor
+                console.e("Sem resposta do servidor:", e.request);
+            } else {
+                // erro ao configurar a requisição
+                console.error("--erro requisição:", e.message);
+            }
+        });
     }
 
     const handleDay = (props) => {
