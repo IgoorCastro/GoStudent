@@ -5,13 +5,16 @@ import Button from '../../components/Button';
 import { useCalendarContext } from '../../context/DataContext';
 
 const ConfirmEvent = ({ title = 'title', text = 'text', onConfirm, onCancel }) => {
-    const { closeTaskConfirmEvent } = useCalendarContext();
+    const { closeTaskConfirmEvent, setCalendarUpdt } = useCalendarContext();
     const handleConfirmEvent = () => {
         if (onConfirm)
             onConfirm();
         else
             console.log("--(handleConfirmEvent) erro: nenhuma função encontrada. Use 'onConfirm' como parametro!");
 
+
+        // atualiza as cores do calendário
+        setCalendarUpdt();
         closeTaskConfirmEvent();
     }
 

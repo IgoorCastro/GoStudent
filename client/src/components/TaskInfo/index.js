@@ -10,7 +10,7 @@ import ConfirmEvent from '../../components/ConfirmEvent';
 const TaskInfo = () => {
     // Pegando useCalendarContext do contexto
     const { dataSelecionada, closeTaskInfo, currentIndex, setCurrentIndx, listDataSelecionada, showTaskEdit, isTaskConfirmEvent,
-        showTaskConfirmEvent } = useCalendarContext();
+        showTaskConfirmEvent, setCalendarUpdt, setListData } = useCalendarContext();
 
     // State para guardar as informações das input
     const [values, setValues] = useState();
@@ -106,10 +106,11 @@ const TaskInfo = () => {
 
     const handleDeletButton = () => {
         showTaskConfirmEvent();
-        console.log("ID: ", listDataSelecionada[currentIndex].eve_id);
+        //console.log("ID: ", listDataSelecionada[currentIndex].eve_id);
     }
 
     const handleConfirmDelet = () => {
+        // deleta o registro
         Axios.delete(`http://localhost:3001/delete/${listDataSelecionada[currentIndex].eve_id}`).then(() => {
             alert("Registro deletado");
             closeTaskInfo();
@@ -120,12 +121,19 @@ const TaskInfo = () => {
                 console.error("--dados do erro:", e.response.data);
             } else if (e.request) {
                 // requisição feita, mas não houve resposta do servidor
-                console.e("Sem resposta do servidor:", e.request);
+                console.log("Sem resposta do servidor:", e.request);
             } else {
                 // erro ao configurar a requisição
                 console.error("--erro requisição:", e.message);
             }
         });
+
+        // atualiza o calendario
+        //setCalendarUpdt(prevState => prevState + 1);
+
+        // reseta a lista de seleção
+        //setListData({});
+
     }
 
     const handleDay = (props) => {

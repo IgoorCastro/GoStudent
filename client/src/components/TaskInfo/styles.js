@@ -51,7 +51,7 @@ export const TopAddContainer = styled.div`
 `;
 
 export const TopIconContainer = styled.div`
-    width: 90%;
+    width: 95%;
     height: 60%;
     
     display: flex;
@@ -79,7 +79,7 @@ export const IconsContainer = styled.div`
 `;
 
 export const IconsContent = styled.div`
-    width: 10%;
+    width: 15%;
     height: 65%;
     
     font-size: 2rem;
@@ -247,7 +247,7 @@ export const LabelTitleContent = styled.div`
     color: #1B262C;
     background: rgba(255,255,255,0.8);
 
-    border-radius: 0.2rem;
+    border-radius: 0.6rem;
 
     //border: 1px solid red;
 `;
@@ -260,7 +260,7 @@ export const LabelContent = styled.div`
     justify-content: center;
     align-items: center; 
 
-    border-radius: 0.2rem;
+    border-radius: 0.7rem;
     //border: 1px solid #3282B8;
     //box-shadow: 0 0 0 3px rgba(15,76,117,0.2);
 
@@ -284,7 +284,7 @@ export const LabelObsContent = styled.div`
     background: rgba(255,255,255,0.8); 
     color: #1B262C;
 
-    border-radius: .2rem;
+    border-radius: .6rem;
 
     //border: 1px solid red;
 `;

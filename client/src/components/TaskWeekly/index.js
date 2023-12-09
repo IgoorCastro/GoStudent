@@ -26,7 +26,6 @@ const TaskWeekly = () => {
     ];
 
     const convertDate = (date) => {
-
         const data = new Date(date);
 
         const dia = data.getDate(); // Obter o ano como dia
@@ -62,7 +61,7 @@ const TaskWeekly = () => {
                 }
             }).then((response) => {
                 setWeeklyList(response.data);
-                console.log("response: ", response);
+                // console.log("response: ", response);
             }).catch((e) => {
                 // tratamento de erro 'requests, response e configuração'
                 if (e.response) {
@@ -70,7 +69,7 @@ const TaskWeekly = () => {
                     console.error("--dados do erro:", e.response.data);
                 } else if (e.request) {
                     // requisição feita, mas não houve resposta do servidor
-                    console.e("Sem resposta do servidor:", e.request);
+                    console.log("Sem resposta do servidor:", e.request);
                 } else {
                     // erro ao configurar a requisição
                     console.error("--erro requisição:", e.message);
@@ -112,7 +111,7 @@ const TaskWeekly = () => {
                             // <C.LabelContent key={index}>
                             //     <Label color='#1B262C' hvColor='#E7E7E7' key={index}>{item.eve_titulo} - {convertDate(item.eve_dataHora)}</Label>
                             // </C.LabelContent>
-                            <C.DataInfoContainer>
+                            <C.DataInfoContainer key={index}>
                                 <C.DataInfoContent>
                                     <C.DataContainer>
                                         <C.DayLabel>

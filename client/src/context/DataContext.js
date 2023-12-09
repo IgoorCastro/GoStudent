@@ -11,7 +11,7 @@ export const useCalendarContext = () => {
 
 // Componente de contexto que manterá o dado e a visibilidade
 export const DataProvider = ({ children }) => {
-    const [listDataSelecionada, setListDataSelecionada] = useState(null);
+    const [listDataSelecionada, setListDataSelecionada] = useState({});
     const [dataSelecionada, setDataSelecionada] = useState(null);
     const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -24,6 +24,13 @@ export const DataProvider = ({ children }) => {
 
     // Contexto de confirmação de evento
     const [isTaskConfirmEvent, setIsTaskConfirmEvent] = useState(false);
+
+    // atualização do calendário
+    const [updateCalendar, setUpdateCalendar] = useState(null);
+
+    const setCalendarUpdt = () => {
+        setUpdateCalendar(prevState => prevState + 1);
+    }
 
     const showTaskConfirmEvent = () => {
         setIsTaskConfirmEvent(true);
@@ -55,9 +62,7 @@ export const DataProvider = ({ children }) => {
     }
 
     const setListData = (listData) => {
-        // Caso a lista esteja vazia, setar apenas a data selecionada
-        if (listData.length > 0)
-            setListDataSelecionada(listData);
+        setListDataSelecionada(listData);
         //console.log("Context: ", listData);
     };
 
@@ -123,7 +128,7 @@ export const DataProvider = ({ children }) => {
             listDataSelecionada, setListData, dataSelecionada, setData, isTaskInfoVisible, toggleComponentVisibility,
             isTaskAddVisible, showAddTask, showTaskInfo, closeTaskInfo, closeTaskAdd, isTaskWeeklyVisible, showWeeklyTask, closeTaskWeekly,
             isTaskEditVisible, showTaskEdit, closeTaskEdit, setListNameCtg, listNameCategoria, setCurrentIndx, currentIndex,
-            isTaskConfirmEvent, showTaskConfirmEvent, closeTaskConfirmEvent, listNameDisciplina, setListNameDscp
+            isTaskConfirmEvent, showTaskConfirmEvent, closeTaskConfirmEvent, listNameDisciplina, setListNameDscp, updateCalendar, setCalendarUpdt
         }}>
             {children}
         </DataContext.Provider>

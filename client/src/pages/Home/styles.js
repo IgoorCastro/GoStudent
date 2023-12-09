@@ -9,12 +9,24 @@ export const Container = styled.div`
     justify-items: center;
     align-items: center;
 
-    //border: 1px solid red;
+    //border: 1px solid purple;
+`;
+
+export const MainContent = styled.div`
+    width: 100%;
+    height: 91%;
+
+    display: flex;
+    flex-direction: row;
+    justify-items: center;
+    align-items: center;
+
+    //border: 1px solid blue;
 `;
 
 // -------------------------- Navbar --------------------------
 
-export const Navbar = styled.div`
+export const NavbarContainer = styled.div`
     z-index: 1;
 
     width: 100%;
@@ -24,7 +36,8 @@ export const Navbar = styled.div`
     justify-content: center;
     align-items: center;
 
-    background: #0F4C75;
+    //background: #0F4C75;
+    background: linear-gradient(12deg, rgba(15,76,117,1) 0%, rgba(23,80,122,1) 100%);
     box-shadow: -1px 2px 8px -2px rgba(0,0,0,0.75);
 
     //border: 1px solid red;
@@ -115,7 +128,7 @@ export const IconContentLogo = styled.div`
 // -------------------------- Navbar --------------------------
 
 export const CalendarContainer = styled.div`
-    width: 100%;
+    width: 80%;
     height: 100%;
 
     display: flex;
@@ -127,7 +140,7 @@ export const CalendarContainer = styled.div`
 `;
 
 export const CalendarContent = styled.div`
-    width: 65%;
+    width: 100%;
     height: 100%;
 
     display: flex;
@@ -166,21 +179,10 @@ export const MessageContent = styled.div`
 
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: start;
     align-items: center;    
 
     //border: 1px solid red;
-`;
-
-export const Title = styled.h2`
-    font-size: 22px;
-    text-transform: uppercase;
-
-    ${({ color }) => color && `color: ${color};`}
-    //border: 1px solid blue;
-
-    height: min-content;
-    text-align: center;    
 `;
 
 export const Button = styled.a`
