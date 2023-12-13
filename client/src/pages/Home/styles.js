@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import logo from '../../assets/logo1.png';
 
 export const Container = styled.div`
     width: 100vw;
@@ -44,8 +45,8 @@ export const NavbarContainer = styled.div`
 `;
 
 export const NavbarContent = styled.div`
-    width: 95%;
-    height: max-content;   
+    width: 94%;
+    height: 100%;   
 
     display: flex;
     flex-direction: row;
@@ -101,11 +102,13 @@ export const IconContent = styled.div`
     }
 `;
 
-export const IconContentLogo = styled.div`
-    width: min-content;
-    height: min-content;
+export const LogoContainer = styled.div`
+    //min-width: 4.5%;
+    max-width: 10%;
+    height: 70%;
+    //height: min-content;
 
-    padding: 10px;
+    //padding: 10px;
 
     display: flex;
     flex-direction: column;
@@ -124,6 +127,10 @@ export const IconContentLogo = styled.div`
     }
 `;
 
+export const Img = styled.img`
+    width: 100%;
+    height: 100%;
+`;
 
 // -------------------------- Navbar --------------------------
 

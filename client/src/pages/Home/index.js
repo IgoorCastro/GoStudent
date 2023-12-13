@@ -10,6 +10,7 @@ import TaskWeekly from '../../components/TaskWeekly';
 import TaskEdit from '../../components/TaskEdit';
 import Label from '../../components/Label';
 import { useCalendarContext } from '../../context/DataContext';
+import logo from '../../assets/logo1.png';
 
 const Home = () => {
 
@@ -73,9 +74,9 @@ const Home = () => {
         <C.Container>
             <C.NavbarContainer>
                 <C.NavbarContent>
-                    <C.IconContentLogo>
-                        GS
-                    </C.IconContentLogo>
+                    <C.LogoContainer>
+                        <C.Img src={logo} />
+                    </C.LogoContainer>
                     <C.IconGroup>
                         <C.IconContent
                             selected={selectedIcon}
