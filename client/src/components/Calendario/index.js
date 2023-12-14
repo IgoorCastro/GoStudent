@@ -5,8 +5,9 @@ import { useCalendarContext } from '../../context/DataContext';
 import Title from '../Title';
 
 const Calendario = () => {
-    const { showTaskInfo, showAddTask, listDataSelecionada, setListData, setData, dataSelecionada } = useCalendarContext();
-    setListData({});
+    const { showTaskInfo, showAddTask, listDataSelecionada, setListData, setData, setCalendarUpdt, updateCalendar, closeTaskAdd,
+        setCurrentColor, setCurrentIndx, closeTaskInfo, setErroHom } = useCalendarContext();
+    //setListData({});
     // console.log("listDataSelecionada: ", listDataSelecionada);
     // console.log("dataSelecionada: ", dataSelecionada);
     // --------------------------------- States ---------------------------------
@@ -16,7 +17,26 @@ const Calendario = () => {
     const [anoAtual, setAnoAtual] = useState(new Date().getFullYear());
     const [selectDate, setSelectDate] = useState(null);
     const [colorControl, setColorControl] = useState({});
-    const [updateCalendar, setUpdateCalendar] = useState(null);
+    const [qntSemanas, setQntSemanas] = useState(null);
+    //console.log("qntSemanas: ", qntSemanas);
+
+    useEffect(() => {
+        getCalendarColorControl();
+    }, [updateCalendar]);
+
+    // effect para pegar a quantidade de semanas do mês exibido
+    useEffect(() => {
+        // pega a quantidade de dias do mes/ ano exibido
+        const numeroDeDias = getDaysInMonth(anoAtual, mesAtual);
+
+        // indica em qual dia da semana o primeiro dia do mês cai (0 para domingo, 1 para segunda-feira, e assim por diante).
+        const primeiroDiaSemana = new Date(anoAtual, mesAtual - 1, 1).getDay();
+
+        // numero de semanas do mes atual
+        const linhas = Math.ceil((numeroDeDias + primeiroDiaSemana) / 7);
+
+        setQntSemanas(linhas);
+    }, [anoAtual, mesAtual]);
 
     // --------------------------------- Variaveis estaticas de controle ---------------------------------
     // Cores de selação da data
@@ -62,27 +82,33 @@ const Calendario = () => {
 
     // Função para lidar com a seleção de um dia
     const handleSelecionarDia = (dia, mes, ano) => {
-        setSelectDate({ dia, mes, ano });
-        setData(ano + "/" + mes + "/" + dia);
+        return new Promise((resolve, reject) => {
+            setSelectDate({ dia, mes, ano });
+            setData(`${ano}/${mes}/${dia}`);
 
-        Axios.get("http://localhost:3001/getDateData", {
-            params: {
-                date: ano + "/" + mes + "/" + dia,
-            }
-        }).then((response) => {
-            setListData(response.data);
-        }).catch((e) => {
-            // tratamento de erro 'requests, response e configuração'
-            if (e.response) {
-                console.error("--erro status:", e.response.status);
-                console.error("--dados do erro:", e.response.data);
-            } else if (e.request) {
-                // requisição feita, mas não houve resposta do servidor
-                console.e("Sem resposta do servidor:", e.request);
-            } else {
-                // erro ao configurar a requisição
-                console.error("--erro requisição:", e.message);
-            }
+            Axios.get("http://localhost:3001/getDateData", {
+                params: {
+                    date: `${ano}/${mes}/${dia}`,
+                },
+            })
+                .then((response) => {
+                    setListData(response.data);
+                    resolve(); // Resolvendo a Promise após setListData ser executado
+                })
+                .catch((e) => {
+                    // tratamento de erro 'requests, response e configuração'
+                    if (e.response) {
+                        console.error("--erro status:", e.response.status);
+                        console.error("--dados do erro:", e.response.data);
+                    } else if (e.request) {
+                        // requisição feita, mas não houve resposta do servidor
+                        console.log("Sem resposta do servidor:", e.request);
+                    } else {
+                        // erro ao configurar a requisição
+                        console.error("--erro requisição:", e.message);
+                    }
+                    reject(e); // Rejeitando a Promise em caso de erro na requisição
+                });
         });
     };
 
@@ -113,7 +139,7 @@ const Calendario = () => {
         return dia === diaAtual && mesAtual === mesAtualSelecionado; // Compara o dia que está sendo montado com o dia atual, mesma coisa para o mes (retorna um boolean)
     };
 
-    // Função para criar um array bidimensional para representar os dias do calendario
+    // Função para criar um array bidimensional para representar os dias do calendario    
     const criarArrayDeDias = () => {
         const dias = []; // Array que vai armazenar os dias do calendario
         for (let linha = 0; linha < linhas; linha++) { // Loop para percorrer as linhas do calendario calculada anteriormente (Quntidade de semanas do mês)
@@ -128,7 +154,7 @@ const Calendario = () => {
             // [6, 7, 8, 9, 10, 11, 12],   // Segunda semana
             // [13, 14, 15, 16, 17, 18, 19],  // Terceira semana
             // [20, 21, 22, 23, 24, 25, 26],  // Quarta semana
-            // [27, 28, 29, 30, null, null, null]  // Quinta semana)
+            // [27, 28, 29, 30, null, null, null]  // Quinta semana)            
         }
         return dias;
     };
@@ -144,7 +170,7 @@ const Calendario = () => {
                 console.error("--dados do erro:", e.response.data);
             } else if (e.request) {
                 // requisição feita, mas não houve resposta do servidor
-                console.e("Sem resposta do servidor:", e.request);
+                console.log("Sem resposta do servidor:", e.request);
             } else {
                 // erro ao configurar a requisição
                 console.error("--erro requisição:", e.message);
@@ -152,10 +178,6 @@ const Calendario = () => {
         });
 
     }
-
-    useEffect(() => {
-        getCalendarColorControl();
-    }, [updateCalendar]);
 
     const calendarColorControl = (dia, mes, ano) => {
         let repeatedDaysCount = 0;
@@ -174,22 +196,22 @@ const Calendario = () => {
                 }
             }
         }
+        return calendarColorGenerator(repeatedDaysCount);
+    }
+
+    const calendarColorGenerator = (repeatedDaysCount) => {
         let color = 'rgb(242, 41, 59';
         switch (repeatedDaysCount) {
             case 1:
-                return { background: color + ', 0.3)' };
+                return { background: color + ', 0.2)' };
             case 2:
                 return { background: color + ', 0.5)' };
             case 3:
-                return { background: color + ', 0.6)' };
-            case 4:
                 return { background: color + ', 0.7)' };
             default:
-                return {};
+                return repeatedDaysCount < 1 ? {} : { background: color + ', 0.9)' };
         }
-
     }
-
 
     const convertDate = (date) => {
         let data = "";
@@ -214,13 +236,13 @@ const Calendario = () => {
 
     const handlePreviousMonth = () => {
         mesAnterior();
-        setUpdateCalendar(prevState => prevState + 1);
+        setCalendarUpdt();
         // getCalendarColorControl();        
     }
 
     const handleNextMonth = () => {
         proximoMes();
-        setUpdateCalendar(prevState => prevState + 1);
+        setCalendarUpdt();
         // getCalendarColorControl();
     }
 
@@ -231,36 +253,60 @@ const Calendario = () => {
             <C.CalendarioContainer>
                 <C.TitleContent>
                     <C.Button position='left' onClick={handlePreviousMonth}>&lt;</C.Button>
-                    <Title>{`${nomesDosMeses[mesAtual - 1]}  ${anoAtual}`}</Title>
+                    <C.Title>{`${nomesDosMeses[mesAtual - 1]}  ${anoAtual}`}</C.Title>
                     <C.Button position='right' onClick={handleNextMonth}>&gt;</C.Button>
                 </C.TitleContent>
+
                 <C.CalendarioTable>
                     <C.CalendarioThread>
                         <C.CalendarioTr>
-                            <C.CalendarioTd style={{ cursor: 'default' }}>Dom</C.CalendarioTd>
-                            <C.CalendarioTd style={{ cursor: 'default' }}>Seg</C.CalendarioTd>
-                            <C.CalendarioTd style={{ cursor: 'default' }}>Ter</C.CalendarioTd>
-                            <C.CalendarioTd style={{ cursor: 'default' }}>Qua</C.CalendarioTd>
-                            <C.CalendarioTd style={{ cursor: 'default' }}>Qui</C.CalendarioTd>
-                            <C.CalendarioTd style={{ cursor: 'default' }}>Sex</C.CalendarioTd>
-                            <C.CalendarioTd style={{ cursor: 'default' }}>Sab</C.CalendarioTd>
+                            <C.CalendarioTdWeekly style={{ cursor: 'default' }}>Dom</C.CalendarioTdWeekly>
+                            <C.CalendarioTdWeekly style={{ cursor: 'default' }}>Seg</C.CalendarioTdWeekly>
+                            <C.CalendarioTdWeekly style={{ cursor: 'default' }}>Ter</C.CalendarioTdWeekly>
+                            <C.CalendarioTdWeekly style={{ cursor: 'default' }}>Qua</C.CalendarioTdWeekly>
+                            <C.CalendarioTdWeekly style={{ cursor: 'default' }}>Qui</C.CalendarioTdWeekly>
+                            <C.CalendarioTdWeekly style={{ cursor: 'default' }}>Sex</C.CalendarioTdWeekly>
+                            <C.CalendarioTdWeekly style={{ cursor: 'default' }}>Sab</C.CalendarioTdWeekly>
                         </C.CalendarioTr>
                     </C.CalendarioThread>
                     <C.CalendarioTBody>
                         {criarArrayDeDias().map((semana, index) => (
                             <C.CalendarioTr key={index}>
                                 {semana.map((dia, index) => (
-                                    <C.CalendarioTd
+                                    <C.CalendarioTdDay
                                         key={index}
                                         onDoubleClick={() => {
-                                            if (listDataSelecionada && convertDate(selectDate) === convertDate(listDataSelecionada[0].eve_dataHora))
+                                            // verifica se há uma dataSeleciona
+                                            console.log("listDataSelecionada: ", listDataSelecionada);
+                                            if (listDataSelecionada && listDataSelecionada.length > 0 && convertDate(selectDate) === convertDate(listDataSelecionada[0].eve_dataHora)) {
+                                                setCurrentColor(calendarColorGenerator(listDataSelecionada.length));
                                                 showTaskInfo();
-
+                                                //console.log(listDataSelecionada.length);                                                
+                                            }
+                                            setCurrentIndx(0);
                                         }}
                                         onClick={() => {
+                                            closeTaskInfo();
                                             if (dia !== null) {
+                                                // data atual do sistema
+                                                const dataSistema = new Date();
+                                                // objeto para o contrutor de Date interpretar (manter dia +1 para a seleção do dia atual)
+                                                const dataSelecionada = `${anoAtual}-${mesAtual}-${dia + 1}`;
+                                                // gera a data selecionada pelo usuario
+                                                const dataAtual = new Date(dataSelecionada);
+
                                                 handleSelecionarDia(dia, mesAtual, anoAtual);
-                                                showAddTask();
+
+                                                // verificar se a data do sistema é maior que a data selecionada
+                                                if (dataAtual.getTime() > dataSistema.getTime()) {
+                                                    showAddTask();
+                                                    setErroHom(null);
+                                                }
+                                                else {
+                                                    closeTaskAdd();
+                                                    setErroHom("Atenção: Impossível agendar em uma data passada");
+                                                    //alert("Impossivel agendar em uma data passada");
+                                                }
                                             }
                                         }}
                                         style={{
@@ -268,8 +314,11 @@ const Calendario = () => {
                                         }}
                                     >
                                         <C.RadiusContent
+                                            key={updateCalendar}
                                             day={dia}
                                             style={{
+                                                // controle da altura do contorno da data
+                                                ...(qntSemanas === 5) ? { height: '67%' } : { height: '80%' },
                                                 // Controle de cores de acordo com a quantidade de atv cadastradas 
                                                 ...colorControl.length > 0 ? calendarColorControl(dia, mesAtual, anoAtual) : {},
                                                 // Data selecionada
@@ -280,7 +329,7 @@ const Calendario = () => {
                                             }}>
                                             {dia !== null ? dia : ''}
                                         </C.RadiusContent>
-                                    </C.CalendarioTd>
+                                    </C.CalendarioTdDay>
                                 ))}
                             </C.CalendarioTr>
                         ))}

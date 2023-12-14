@@ -7,10 +7,11 @@ import { faTrash, faTurnUp, faPen, faChevronLeft, faChevronRight } from '@fortaw
 import Title from '../../components/Title';
 import ConfirmEvent from '../../components/ConfirmEvent';
 
-const TaskInfo = () => {
+const TaskInfo = (props) => {
     // Pegando useCalendarContext do contexto
     const { dataSelecionada, closeTaskInfo, currentIndex, setCurrentIndx, listDataSelecionada, showTaskEdit, isTaskConfirmEvent,
-        showTaskConfirmEvent } = useCalendarContext();
+        showTaskConfirmEvent, currentDateColor, setListData } = useCalendarContext();
+    console.log("currentDateColor: ", currentDateColor);
 
     // State para guardar as informações das input
     const [values, setValues] = useState();
@@ -33,6 +34,7 @@ const TaskInfo = () => {
         'Nov',
         'Dez',
     ];
+
 
 
     const handleClickButton = () => {
@@ -62,8 +64,6 @@ const TaskInfo = () => {
 
     var dataString = null, titleString = null, disciplinaString = null, tipoString = null, observacaoString = null;
     if (listDataSelecionada && listDataSelecionada.length > 1) {
-        //console.log("---TaskInfo: ", listDataSelecionada);
-
         titleString = listDataSelecionada[currentIndex].eve_titulo;
 
         disciplinaString = listDataSelecionada[currentIndex].dis_nome;
@@ -72,13 +72,16 @@ const TaskInfo = () => {
 
         observacaoString = listDataSelecionada[currentIndex].eve_descricao;
     } else {
-        titleString = listDataSelecionada[0].eve_titulo;
+        if (listDataSelecionada.length === 1) {
+            console.log("---TaskInfo: ", listDataSelecionada);
+            titleString = listDataSelecionada[0].eve_titulo;
 
-        disciplinaString = listDataSelecionada[0].dis_nome;
+            disciplinaString = listDataSelecionada[0].dis_nome;
 
-        tipoString = listDataSelecionada[0].cat_nome;
+            tipoString = listDataSelecionada[0].cat_nome;
 
-        observacaoString = listDataSelecionada[0].eve_descricao;
+            observacaoString = listDataSelecionada[0].eve_descricao;
+        }
     }
 
     const handleNext = () => {
@@ -106,11 +109,13 @@ const TaskInfo = () => {
 
     const handleDeletButton = () => {
         showTaskConfirmEvent();
-        console.log("ID: ", listDataSelecionada[currentIndex].eve_id);
+        //console.log("ID: ", listDataSelecionada[currentIndex].eve_id);
     }
 
     const handleConfirmDelet = () => {
+        // deleta o registro
         Axios.delete(`http://localhost:3001/delete/${listDataSelecionada[currentIndex].eve_id}`).then(() => {
+            setCurrentIndx();
             alert("Registro deletado");
             closeTaskInfo();
         }).catch((e) => {
@@ -120,12 +125,19 @@ const TaskInfo = () => {
                 console.error("--dados do erro:", e.response.data);
             } else if (e.request) {
                 // requisição feita, mas não houve resposta do servidor
-                console.e("Sem resposta do servidor:", e.request);
+                console.log("Sem resposta do servidor:", e.request);
             } else {
                 // erro ao configurar a requisição
                 console.error("--erro requisição:", e.message);
             }
         });
+
+        // atualiza o calendario
+        //setCalendarUpdt(prevState => prevState + 1);
+
+        // reseta a lista de seleção
+        //setListData({});
+
     }
 
     const handleDay = (props) => {
@@ -149,7 +161,7 @@ const TaskInfo = () => {
     // console.log("dataSelecionada: ",);
 
     return (
-        <C.AddContainer>
+        <C.AddContainer bgColor={currentDateColor.background} >
             {isTaskConfirmEvent && <ConfirmEvent title='Excluir' text='Deseja excluir o registro?' onConfirm={handleConfirmDelet}>
             </ConfirmEvent>}
             <C.ButtonContainer onClick={() => handlePrevious()}>
@@ -176,8 +188,8 @@ const TaskInfo = () => {
 
                     <C.DateContainer>
                         <C.DateContent>
-                            <C.DayLabel>{handleDay(listDataSelecionada[0].eve_dataHora)}</C.DayLabel>
-                            <C.MonthLabel>{nomesDosMeses[handleMonth(listDataSelecionada[0].eve_dataHora)]}</C.MonthLabel>
+                            <C.DayLabel>{listDataSelecionada.length > 0 ? handleDay(listDataSelecionada[0].eve_dataHora) : null}</C.DayLabel>
+                            <C.MonthLabel>{listDataSelecionada.length > 0 ? nomesDosMeses[handleMonth(listDataSelecionada[0].eve_dataHora)] : null}</C.MonthLabel>
                         </C.DateContent>
                     </C.DateContainer>
                     <C.LabelTitleContainer>

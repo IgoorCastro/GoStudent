@@ -13,7 +13,7 @@ import ConfirmEvent from '../../components/ConfirmEvent';
 const TaskEdit = () => {
     // Pegando useDataContext do contexto
     const { isTaskEditVisible, listDataSelecionada, closeTaskEdit, currentIndex, isTaskConfirmEvent, showTaskConfirmEvent,
-        listNameCategoria, listNameDisciplina } = useCalendarContext();
+        listNameCategoria, listNameDisciplina, setCurrentIndx } = useCalendarContext();
     //console.log("Context - listDataSelecionada: ", listDataSelecionada);
 
     // State para guardar as informações das input
@@ -26,7 +26,7 @@ const TaskEdit = () => {
         observacaoString: '',
         // outros campos do formulário aqui
     });
-    console.log("--values: ", values);
+    // console.log("--values: ", values);
 
     const [lastListDataSelecionada, setLastListDataSelecionada] = useState();
     const [erro, setErro] = useState("");
@@ -89,8 +89,9 @@ const TaskEdit = () => {
             observacao: values.observacaoString,
             id: values.id,
         }).then((response) => {
+            setCurrentIndx();
             alert("Edit concluidos");
-            console.log("--response: ", response.data);
+            //console.log("--response: ", response.data);
             closeTaskEdit();
         }).catch((e) => {
             // tratamento de erro 'requests, response e configuração'
@@ -101,7 +102,7 @@ const TaskEdit = () => {
             } else if (e.request) {
                 // requisição feita, mas não houve resposta do servidor
                 setErro("erro ", e.request.status, " - contate um administrador!");
-                console.e("Sem resposta do servidor:", e.request);
+                console.log("Sem resposta do servidor:", e.request);
             } else {
                 // erro ao configurar a requisição
                 setErro("erro ao configurar a requisição - contate um administrador!");
@@ -130,8 +131,10 @@ const TaskEdit = () => {
     }
 
     const updateDateData = () => {
-
+        // envia a ultma data selecionada para a state
         setLastListDataSelecionada(listDataSelecionada[currentIndex].eve_dataHora);
+        console.log("lastListDataSelecionada: ", lastListDataSelecionada);
+        console.log("listDataSelecionada[0].eve_dataHora: ", listDataSelecionada[0].eve_dataHora);
         if (Array.isArray(listDataSelecionada) && isTaskEditVisible) {
             console.log("---------- update data ----------");
             setValues({
@@ -147,10 +150,13 @@ const TaskEdit = () => {
         //console.log("values update: ", values);
     }
 
-    if (lastListDataSelecionada !== listDataSelecionada[0].eve_dataHora) {
-        console.log(lastListDataSelecionada !== listDataSelecionada[0].eve_dataHora);
-        updateDateData();
-    }
+    // // verifica se a 
+    // if (lastListDataSelecionada !== listDataSelecionada[0].eve_dataHora) {
+    //     console.log("lastListDataSelecionada !== listDataSelecionada[0].eve_dataHora: ", lastListDataSelecionada !== listDataSelecionada[0].eve_dataHora);
+
+
+    //     updateDateData();
+    // }
 
     const handleClickConfiNotif = () => {
         alert("handleClickConfiNotif");

@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import logo from '../../assets/logo1.png';
 
 export const Container = styled.div`
     width: 100vw;
@@ -9,12 +10,24 @@ export const Container = styled.div`
     justify-items: center;
     align-items: center;
 
-    //border: 1px solid red;
+    //border: 1px solid purple;
+`;
+
+export const MainContent = styled.div`
+    width: 100%;
+    height: 91%;
+
+    display: flex;
+    flex-direction: row;
+    justify-items: center;
+    align-items: center;
+
+    //border: 1px solid blue;
 `;
 
 // -------------------------- Navbar --------------------------
 
-export const Navbar = styled.div`
+export const NavbarContainer = styled.div`
     z-index: 1;
 
     width: 100%;
@@ -24,15 +37,16 @@ export const Navbar = styled.div`
     justify-content: center;
     align-items: center;
 
-    background: #0F4C75;
+    //background: #0F4C75;
+    background: linear-gradient(12deg, rgba(15,76,117,1) 0%, rgba(23,80,122,1) 100%);
     box-shadow: -1px 2px 8px -2px rgba(0,0,0,0.75);
 
     //border: 1px solid red;
 `;
 
 export const NavbarContent = styled.div`
-    width: 95%;
-    height: max-content;   
+    width: 94%;
+    height: 100%;   
 
     display: flex;
     flex-direction: row;
@@ -88,11 +102,13 @@ export const IconContent = styled.div`
     }
 `;
 
-export const IconContentLogo = styled.div`
-    width: min-content;
-    height: min-content;
+export const LogoContainer = styled.div`
+    //min-width: 4.5%;
+    max-width: 10%;
+    height: 70%;
+    //height: min-content;
 
-    padding: 10px;
+    //padding: 10px;
 
     display: flex;
     flex-direction: column;
@@ -111,11 +127,15 @@ export const IconContentLogo = styled.div`
     }
 `;
 
+export const Img = styled.img`
+    width: 100%;
+    height: 100%;
+`;
 
 // -------------------------- Navbar --------------------------
 
 export const CalendarContainer = styled.div`
-    width: 100%;
+    width: 80%;
     height: 100%;
 
     display: flex;
@@ -127,7 +147,7 @@ export const CalendarContainer = styled.div`
 `;
 
 export const CalendarContent = styled.div`
-    width: 65%;
+    width: 100%;
     height: 100%;
 
     display: flex;
@@ -166,21 +186,10 @@ export const MessageContent = styled.div`
 
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: start;
     align-items: center;    
 
     //border: 1px solid red;
-`;
-
-export const Title = styled.h2`
-    font-size: 22px;
-    text-transform: uppercase;
-
-    ${({ color }) => color && `color: ${color};`}
-    //border: 1px solid blue;
-
-    height: min-content;
-    text-align: center;    
 `;
 
 export const Button = styled.a`
@@ -214,4 +223,17 @@ export const Button = styled.a`
         background: #939799;
         color: #E7E7E7;
     }
+`;
+
+export const ErroContainer = styled.div`
+    padding: 5px 0;
+    width: 90%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 5px;
+
+    background: #E54748;
 `;

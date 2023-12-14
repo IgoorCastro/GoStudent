@@ -26,7 +26,7 @@ export const MainAddCointainer = styled.div`
 `;
 
 export const TopAddContainer = styled.div`
-     width: 100%;
+    width: 100%;
     height: 23%;
     
     text-align: center;
@@ -40,7 +40,7 @@ export const TopAddContainer = styled.div`
 `;
 
 export const TopAddTitle = styled.div`
-    width: 90%;
+    width: 95%;
     height: 40%;
 
     display: flex;
@@ -52,7 +52,7 @@ export const TopAddTitle = styled.div`
 `;
 
 export const TopIconsContent = styled.div`
-    width: 90%;
+    width: 83%;
     height: 60%;
     
     display: flex;
@@ -65,10 +65,8 @@ export const TopIconsContent = styled.div`
 `;
 
 export const IconsContent = styled.div`
-    width: min-content;
-    height: min-content;
-
-    padding: 10px;
+    width: 13%;
+    height: 55%;
     
     font-size: 2rem;
     color: #0F4C75;

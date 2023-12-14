@@ -11,7 +11,7 @@ export const useCalendarContext = () => {
 
 // Componente de contexto que manterá o dado e a visibilidade
 export const DataProvider = ({ children }) => {
-    const [listDataSelecionada, setListDataSelecionada] = useState(null);
+    const [listDataSelecionada, setListDataSelecionada] = useState({});
     const [dataSelecionada, setDataSelecionada] = useState(null);
     const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -24,6 +24,27 @@ export const DataProvider = ({ children }) => {
 
     // Contexto de confirmação de evento
     const [isTaskConfirmEvent, setIsTaskConfirmEvent] = useState(false);
+
+    // contexto da cor da agenda
+    const [currentDateColor, setCurrentDateColor] = useState(null);
+
+    // atualização do calendário
+    const [updateCalendar, setUpdateCalendar] = useState(null);
+
+    // mensagem de erro tela home
+    const [erroHome, setErroHome] = useState(null);
+
+    const setErroHom = (erro) => {
+        setErroHome(erro);
+    }
+
+    const setCurrentColor = (color) => {
+        setCurrentDateColor(color);
+    }
+
+    const setCalendarUpdt = () => {
+        setUpdateCalendar(prevState => prevState + 1);
+    }
 
     const showTaskConfirmEvent = () => {
         setIsTaskConfirmEvent(true);
@@ -55,9 +76,7 @@ export const DataProvider = ({ children }) => {
     }
 
     const setListData = (listData) => {
-        // Caso a lista esteja vazia, setar apenas a data selecionada
-        if (listData.length > 0)
-            setListDataSelecionada(listData);
+        setListDataSelecionada(listData);
         //console.log("Context: ", listData);
     };
 
@@ -87,13 +106,14 @@ export const DataProvider = ({ children }) => {
 
     const closeTaskInfo = () => {
         setIsTaskInfoVisible(false);
+        setIsTaskInfoVisible(false);
         setIsTaskWeeklVisible(true);
     }
 
     const showAddTask = () => {
         //console.log("showAddTask");
-        setIsTaskInfoVisible(false); // Fecha o component 'TaskInfo'
         setIsTaskAddVisible(true); // Mostra o component 'TaskAdd'
+        setIsTaskInfoVisible(false); // Fecha o component 'TaskInfo'
         setIsTaskWeeklVisible(false);
         setIsTaskEditVisible(false);
     }
@@ -123,7 +143,8 @@ export const DataProvider = ({ children }) => {
             listDataSelecionada, setListData, dataSelecionada, setData, isTaskInfoVisible, toggleComponentVisibility,
             isTaskAddVisible, showAddTask, showTaskInfo, closeTaskInfo, closeTaskAdd, isTaskWeeklyVisible, showWeeklyTask, closeTaskWeekly,
             isTaskEditVisible, showTaskEdit, closeTaskEdit, setListNameCtg, listNameCategoria, setCurrentIndx, currentIndex,
-            isTaskConfirmEvent, showTaskConfirmEvent, closeTaskConfirmEvent, listNameDisciplina, setListNameDscp
+            isTaskConfirmEvent, showTaskConfirmEvent, closeTaskConfirmEvent, listNameDisciplina, setListNameDscp, updateCalendar,
+            setCalendarUpdt, currentDateColor, setCurrentColor, erroHome, setErroHom
         }}>
             {children}
         </DataContext.Provider>

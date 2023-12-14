@@ -12,18 +12,19 @@ import LabelErro from '../../components/LabelErro';
 
 const AddTask = () => {
     // Pegando useDataContext do contexto
-    const { listNameCategoria, listNameDisciplina, closeTaskAdd, dataSelecionada, isTaskConfirmEvent, showTaskConfirmEvent } = useCalendarContext();
+    const { listNameCategoria, listNameDisciplina, closeTaskAdd, dataSelecionada, isTaskConfirmEvent, showTaskConfirmEvent,
+        setCalendarUpdt } = useCalendarContext();
     const [erro, setErro] = useState("");
 
     // State para guardar as informações das input
     const [values, setValues] = useState({
         data: '',
-        tipo: 1,
-        disciplina: 1,
+        tipo: 4,
+        disciplina: 4,
         titulo: '',
         observacao: '',
     });
-    console.log("values: ", values);
+    //console.log("values: ", values);
 
     const nomesDosMeses = [
         'Jan',
@@ -40,9 +41,8 @@ const AddTask = () => {
         'Dez',
     ];
 
+    // função para formatar a data no estilo dia/ mes/ ano
     const convertDate = (date) => {
-        //console.log("E-convertDate: " + date);
-
         const data = new Date(date.substring(0, 10));
 
         const dia = data.getDate(); // Obter o ano como dia
@@ -74,21 +74,15 @@ const AddTask = () => {
     }
 
     const handleClickButton = () => {
-        //Mensagens de erro
+        // verifica se o titulo está vazio
         if (!values.titulo) {
             setErro("Título obrigatório");
             return;
         }
-
         showTaskConfirmEvent();
     }
 
     const handleConfirmReg = () => {
-        // Formatação da data para o DB
-        if (dataSelecionada) {
-            var data = dataSelecionada;
-        }
-
         // request de registro
         Axios.post("http://localhost:3001/register", {
             titulo: values.titulo,
@@ -97,6 +91,7 @@ const AddTask = () => {
             data: values.data,
             observacao: values.observacao
         }).then((response) => {
+            setCalendarUpdt();
             alert("Registro concluidos");
             closeTaskAdd();
             //console.log("--response: ", response.data);
@@ -109,7 +104,7 @@ const AddTask = () => {
             } else if (e.request) {
                 // requisição feita, mas não houve resposta do servidor
                 setErro("erro ", e.request.status, " - contate um administrador!");
-                console.e("Sem resposta do servidor:", e.request);
+                console.log("Sem resposta do servidor:", e.request);
             } else {
                 // erro ao configurar a requisição
                 setErro("erro ao configurar a requisição - contate um administrador!");
@@ -119,13 +114,14 @@ const AddTask = () => {
     }
 
     const handleClickConfiNotif = () => {
-        alert("handleClickConfiNotif");
+        alert("Configuração de notificações exclusivas para versão mobile");
     }
 
     const handleClickExit = () => {
         closeTaskAdd();
     }
 
+    // retorno do dia
     const handleDay = (props) => {
         const newData = props.slice(0, 10);
 
@@ -133,6 +129,8 @@ const AddTask = () => {
         const dia = data.getDate();
         return dia;
     }
+
+    // retorno do mês 
     const handleMonth = (props) => {
         const newData = props.slice(0, 10);
 
@@ -176,7 +174,7 @@ const AddTask = () => {
                     </C.InputContent>
                     <C.InputContent>
                         <C.Select name='disciplina' onChange={handleChangeValues}>
-                            <C.Option value='1' disabled selected>Disciplina</C.Option>
+                            <C.Option value={listNameDisciplina.length} disabled selected>Disciplina</C.Option>
                             {listNameDisciplina.map((item, index) => (
                                 <C.Option key={index} value={index + 1}>
                                     {item.dis_nome}
@@ -186,7 +184,7 @@ const AddTask = () => {
                     </C.InputContent>
                     <C.InputContent>
                         <C.Select name='tipo' onChange={handleChangeValues}>
-                            <C.Option value='1' disabled selected>Tipo de atividade</C.Option>
+                            <C.Option value={listNameCategoria.length} disabled selected>Tipo de atividade</C.Option>
                             {listNameCategoria.map((item, index) => (
                                 <C.Option key={index} value={index + 1}>
                                     {item.cat_nome}
@@ -207,4 +205,4 @@ const AddTask = () => {
     )
 }
 
-export default AddTask
+export default AddTask;

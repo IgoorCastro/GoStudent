@@ -9,14 +9,17 @@ import TaskInfo from '../../components/TaskInfo';
 import TaskWeekly from '../../components/TaskWeekly';
 import TaskEdit from '../../components/TaskEdit';
 import Label from '../../components/Label';
+import LabelErro from '../../components/LabelErro';
 import { useCalendarContext } from '../../context/DataContext';
+import logo from '../../assets/logo1.png';
 
 const Home = () => {
 
-    const [selectedIcon, setSelectedIcon] = useState(false);
+    const [selectedIcon, setSelectedIcon] = useState(true);
 
     // Contexto para controle da renderização do component 'AddTask'
-    const { showAddTask, isTaskInfoVisible, isTaskAddVisible, isTaskWeeklyVisible, isTaskEditVisible, setListNameCtg, setListNameDscp } = useCalendarContext();
+    const { showAddTask, isTaskInfoVisible, isTaskAddVisible, isTaskWeeklyVisible, isTaskEditVisible, setListNameCtg, setListNameDscp,
+        erroHome } = useCalendarContext();
 
     useEffect(() => {
         Axios.get("http://localhost:3001/getCategorias", {
@@ -30,7 +33,7 @@ const Home = () => {
                 console.error("--dados do erro:", e.response.data);
             } else if (e.request) {
                 // requisição feita, mas não houve resposta do servidor
-                console.e("Sem resposta do servidor:", e.request);
+                console.error("Sem resposta do servidor:", e.request);
             } else {
                 // erro ao configurar a requisição
                 console.error("--erro requisição:", e.message);
@@ -40,7 +43,7 @@ const Home = () => {
         Axios.get("http://localhost:3001/getDisciplinas", {
         }).then((response) => {
             setListNameDscp(response.data);
-            console.log("--response: ", response.data);
+            //console.log("--response: ", response.data);
         }).catch((e) => {
             // tratamento de erro 'requests, response e configuração'
             if (e.response) {
@@ -48,7 +51,7 @@ const Home = () => {
                 console.error("--dados do erro:", e.response.data);
             } else if (e.request) {
                 // requisição feita, mas não houve resposta do servidor
-                console.e("Sem resposta do servidor:", e.request);
+                console.log("Sem resposta do servidor:", e.request);
             } else {
                 // erro ao configurar a requisição
                 console.error("--erro requisição:", e.message);
@@ -66,13 +69,15 @@ const Home = () => {
         showAddTask();
     };
 
+
+
     return (
         <C.Container>
-            <C.Navbar>
+            <C.NavbarContainer>
                 <C.NavbarContent>
-                    <C.IconContentLogo>
-                        GS
-                    </C.IconContentLogo>
+                    <C.LogoContainer>
+                        <C.Img src={logo} />
+                    </C.LogoContainer>
                     <C.IconGroup>
                         <C.IconContent
                             selected={selectedIcon}
@@ -90,27 +95,35 @@ const Home = () => {
                         <FontAwesomeIcon icon={faUser} />
                     </C.IconContent>
                 </C.NavbarContent>
-            </C.Navbar>
-            <C.CalendarContainer>
-                <C.CalendarContent>
-                    <Calendario />
-                    <C.MessageContent>
-                        <Label>
-                            Bem vindo de volta aluno
-                        </Label>
-                        <Label>
-                            Mantenha seu calendario sempre atualizado
-                        </Label>
-                    </C.MessageContent>
-                </C.CalendarContent>
+            </C.NavbarContainer>
+            <C.MainContent>
+                <C.CalendarContainer>
+                    <C.CalendarContent>
+                        <Calendario />
+                        <C.MessageContent>
+                            {erroHome && (<C.ErroContainer>
+                                <LabelErro color='#fff'>
+                                    {erroHome}
+                                </LabelErro>
+                            </C.ErroContainer>)}
+                            {!erroHome && (<>
+                                <Label>
+                                    Bem vindo de volta aluno
+                                </Label>
+                                <Label>
+                                    Mantenha seu calendario sempre atualizado
+                                </Label>
+                            </>)}
+                        </C.MessageContent>
+                    </C.CalendarContent>
+                </C.CalendarContainer>
                 <C.DateInfoContent>
                     {isTaskWeeklyVisible && (<TaskWeekly />)}
                     {isTaskInfoVisible && (<TaskInfo />)}
                     {isTaskEditVisible && (<TaskEdit />)}
                     {isTaskAddVisible && (<AddTask />)}
                 </C.DateInfoContent>
-
-            </C.CalendarContainer>
+            </C.MainContent>
         </C.Container >
     )
 }
