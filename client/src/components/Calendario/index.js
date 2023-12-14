@@ -5,7 +5,8 @@ import { useCalendarContext } from '../../context/DataContext';
 import Title from '../Title';
 
 const Calendario = () => {
-    const { showTaskInfo, showAddTask, listDataSelecionada, setListData, setData, setCalendarUpdt, updateCalendar, closeTaskAdd } = useCalendarContext();
+    const { showTaskInfo, showAddTask, listDataSelecionada, setListData, setData, setCalendarUpdt, updateCalendar, closeTaskAdd,
+        setCurrentColor, setCurrentIndx, closeTaskInfo, setErroHom } = useCalendarContext();
     //setListData({});
     // console.log("listDataSelecionada: ", listDataSelecionada);
     // console.log("dataSelecionada: ", dataSelecionada);
@@ -195,21 +196,21 @@ const Calendario = () => {
                 }
             }
         }
+        return calendarColorGenerator(repeatedDaysCount);
+    }
 
+    const calendarColorGenerator = (repeatedDaysCount) => {
         let color = 'rgb(242, 41, 59';
         switch (repeatedDaysCount) {
             case 1:
-                return { background: color + ', 0.3)' };
+                return { background: color + ', 0.2)' };
             case 2:
                 return { background: color + ', 0.5)' };
             case 3:
-                return { background: color + ', 0.6)' };
-            case 4:
                 return { background: color + ', 0.7)' };
             default:
-                return {};
+                return repeatedDaysCount < 1 ? {} : { background: color + ', 0.9)' };
         }
-
     }
 
     const convertDate = (date) => {
@@ -276,12 +277,16 @@ const Calendario = () => {
                                         key={index}
                                         onDoubleClick={() => {
                                             // verifica se há uma dataSeleciona
+                                            console.log("listDataSelecionada: ", listDataSelecionada);
                                             if (listDataSelecionada && listDataSelecionada.length > 0 && convertDate(selectDate) === convertDate(listDataSelecionada[0].eve_dataHora)) {
+                                                setCurrentColor(calendarColorGenerator(listDataSelecionada.length));
                                                 showTaskInfo();
-                                                //console.log(listDataSelecionada.length);
+                                                //console.log(listDataSelecionada.length);                                                
                                             }
+                                            setCurrentIndx(0);
                                         }}
                                         onClick={() => {
+                                            closeTaskInfo();
                                             if (dia !== null) {
                                                 // data atual do sistema
                                                 const dataSistema = new Date();
@@ -293,11 +298,14 @@ const Calendario = () => {
                                                 handleSelecionarDia(dia, mesAtual, anoAtual);
 
                                                 // verificar se a data do sistema é maior que a data selecionada
-                                                if (dataAtual.getTime() > dataSistema.getTime())
+                                                if (dataAtual.getTime() > dataSistema.getTime()) {
                                                     showAddTask();
+                                                    setErroHom(null);
+                                                }
                                                 else {
                                                     closeTaskAdd();
-                                                    alert("Impossivel agendar em uma data passada");
+                                                    setErroHom("Atenção: Impossível agendar em uma data passada");
+                                                    //alert("Impossivel agendar em uma data passada");
                                                 }
                                             }
                                         }}

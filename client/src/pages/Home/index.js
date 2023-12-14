@@ -9,6 +9,7 @@ import TaskInfo from '../../components/TaskInfo';
 import TaskWeekly from '../../components/TaskWeekly';
 import TaskEdit from '../../components/TaskEdit';
 import Label from '../../components/Label';
+import LabelErro from '../../components/LabelErro';
 import { useCalendarContext } from '../../context/DataContext';
 import logo from '../../assets/logo1.png';
 
@@ -18,7 +19,7 @@ const Home = () => {
 
     // Contexto para controle da renderização do component 'AddTask'
     const { showAddTask, isTaskInfoVisible, isTaskAddVisible, isTaskWeeklyVisible, isTaskEditVisible, setListNameCtg, setListNameDscp,
-        updateCalendar } = useCalendarContext();
+        erroHome } = useCalendarContext();
 
     useEffect(() => {
         Axios.get("http://localhost:3001/getCategorias", {
@@ -100,12 +101,19 @@ const Home = () => {
                     <C.CalendarContent>
                         <Calendario />
                         <C.MessageContent>
-                            <Label>
-                                Bem vindo de volta aluno
-                            </Label>
-                            <Label>
-                                Mantenha seu calendario sempre atualizado
-                            </Label>
+                            {erroHome && (<C.ErroContainer>
+                                <LabelErro color='#fff'>
+                                    {erroHome}
+                                </LabelErro>
+                            </C.ErroContainer>)}
+                            {!erroHome && (<>
+                                <Label>
+                                    Bem vindo de volta aluno
+                                </Label>
+                                <Label>
+                                    Mantenha seu calendario sempre atualizado
+                                </Label>
+                            </>)}
                         </C.MessageContent>
                     </C.CalendarContent>
                 </C.CalendarContainer>

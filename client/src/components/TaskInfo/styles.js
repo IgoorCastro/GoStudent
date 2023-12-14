@@ -11,8 +11,11 @@ export const AddContainer = styled.div`
     justify-content: center;
 
     border-radius: 5px;
+    
+    // controle de cores do background
+    ${({ bgColor }) => bgColor && `background: ${bgColor}`};
 
-    background: rgb(15,76,117, 0.9);
+    //background: rgb(15,76,117, 0.9);
 
     //border: 1px solid purple;
 `;

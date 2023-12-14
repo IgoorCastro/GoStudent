@@ -91,6 +91,7 @@ const AddTask = () => {
             data: values.data,
             observacao: values.observacao
         }).then((response) => {
+            setCalendarUpdt();
             alert("Registro concluidos");
             closeTaskAdd();
             //console.log("--response: ", response.data);
@@ -113,7 +114,7 @@ const AddTask = () => {
     }
 
     const handleClickConfiNotif = () => {
-        alert("handleClickConfiNotif");
+        alert("Configuração de notificações exclusivas para versão mobile");
     }
 
     const handleClickExit = () => {

@@ -13,7 +13,7 @@ import ConfirmEvent from '../../components/ConfirmEvent';
 const TaskEdit = () => {
     // Pegando useDataContext do contexto
     const { isTaskEditVisible, listDataSelecionada, closeTaskEdit, currentIndex, isTaskConfirmEvent, showTaskConfirmEvent,
-        listNameCategoria, listNameDisciplina } = useCalendarContext();
+        listNameCategoria, listNameDisciplina, setCurrentIndx } = useCalendarContext();
     //console.log("Context - listDataSelecionada: ", listDataSelecionada);
 
     // State para guardar as informações das input
@@ -89,8 +89,9 @@ const TaskEdit = () => {
             observacao: values.observacaoString,
             id: values.id,
         }).then((response) => {
+            setCurrentIndx();
             alert("Edit concluidos");
-            console.log("--response: ", response.data);
+            //console.log("--response: ", response.data);
             closeTaskEdit();
         }).catch((e) => {
             // tratamento de erro 'requests, response e configuração'

@@ -224,3 +224,16 @@ export const Button = styled.a`
         color: #E7E7E7;
     }
 `;
+
+export const ErroContainer = styled.div`
+    padding: 5px 0;
+    width: 90%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 5px;
+
+    background: #E54748;
+`;
