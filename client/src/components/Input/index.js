@@ -8,6 +8,7 @@ const Input = ({ type, placeholder, value, onChange, fontSize, height, bg, name,
     height: height,
     background: bg
   }
+
   return (
     <C.Input
       type={type}
@@ -18,7 +19,6 @@ const Input = ({ type, placeholder, value, onChange, fontSize, height, bg, name,
       style={inputStyle}
       name={name}
     />
-
   )
 }
 

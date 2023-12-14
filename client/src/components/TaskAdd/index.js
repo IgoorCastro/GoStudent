@@ -12,8 +12,7 @@ import LabelErro from '../../components/LabelErro';
 
 const AddTask = () => {
     // Pegando useDataContext do contexto
-    const { listNameCategoria, listNameDisciplina, closeTaskAdd, dataSelecionada, isTaskConfirmEvent, showTaskConfirmEvent,
-        setCalendarUpdt } = useCalendarContext();
+    const { listNameCategoria, listNameDisciplina, closeTaskAdd, dataSelecionada, isTaskConfirmEvent, showTaskConfirmEvent, setCalendarUpdt } = useCalendarContext();
     const [erro, setErro] = useState("");
 
     // State para guardar as informações das input
@@ -79,6 +78,7 @@ const AddTask = () => {
             setErro("Título obrigatório");
             return;
         }
+        
         showTaskConfirmEvent();
     }
 

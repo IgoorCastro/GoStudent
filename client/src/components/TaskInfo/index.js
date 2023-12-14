@@ -71,6 +71,7 @@ const TaskInfo = () => {
         tipoString = listDataSelecionada[currentIndex].cat_nome;
 
         observacaoString = listDataSelecionada[currentIndex].eve_descricao;
+        
     } else {
         titleString = listDataSelecionada[0].eve_titulo;
 
@@ -95,7 +96,6 @@ const TaskInfo = () => {
 
     // Verificar se dataSelecionado é um Array
 
-
     const handleClickExit = () => {
         closeTaskInfo();
     }
@@ -111,7 +111,8 @@ const TaskInfo = () => {
 
     const handleConfirmDelet = () => {
         // deleta o registro
-        Axios.delete(`http://localhost:3001/delete/${listDataSelecionada[currentIndex].eve_id}`).then(() => {
+        Axios.delete(`http://localhost:3001/delete/${listDataSelecionada[currentIndex].eve_id}`)
+        .then(() => {
             alert("Registro deletado");
             closeTaskInfo();
         }).catch((e) => {
@@ -158,8 +159,8 @@ const TaskInfo = () => {
 
     return (
         <C.AddContainer>
-            {isTaskConfirmEvent && <ConfirmEvent title='Excluir' text='Deseja excluir o registro?' onConfirm={handleConfirmDelet}>
-            </ConfirmEvent>}
+            {isTaskConfirmEvent && <ConfirmEvent title='Excluir' text='Deseja excluir o registro?' onConfirm={handleConfirmDelet}></ConfirmEvent>}
+
             <C.ButtonContainer onClick={() => handlePrevious()}>
                 {listDataSelecionada.length > 1 && currentIndex > 0 && convertDate(listDataSelecionada[0].eve_dataHora) === convertDate(dataSelecionada) && (
                     <FontAwesomeIcon icon={faChevronLeft} />)}

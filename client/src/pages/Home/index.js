@@ -67,8 +67,6 @@ const Home = () => {
         showAddTask();
     };
 
-
-
     return (
         <C.Container>
             <C.NavbarContainer>

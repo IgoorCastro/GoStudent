@@ -18,8 +18,7 @@ const db = mysql.createPool({
     database: "gostudent_v1"
 });
 
-
-// Req: é tudo que  entra pelo servidor - Res: é tudo que vai sair do servidor
+// Req: é tudo que entra pelo servidor - Res: é tudo que vai sair do servidor
 app.post("/register", (req, res) => {
     const { titulo } = req.body;
     const { disciplina } = req.body;

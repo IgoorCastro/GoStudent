@@ -126,7 +126,7 @@ export const DateContent = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;   
-    justify-content: start;
+    justify-content: center;
 
     background: rgba(255,255,255,0.8);
 

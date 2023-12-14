@@ -6,6 +6,7 @@ const Button = ({ text, onClick, type = 'button', fontSize, width }) => {
     fontSize: fontSize,
     width: width
   }
+
   return (
     <C.Button
       type={type}

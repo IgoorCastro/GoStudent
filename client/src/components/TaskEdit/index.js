@@ -51,6 +51,7 @@ const TaskEdit = () => {
 
     const handleChangeValues = (event) => {
         const { name, value } = event.target;
+
         setValues(prevValues => ({
             ...prevValues,
             [name]: value,
@@ -80,7 +81,6 @@ const TaskEdit = () => {
 
         //console.log("'handleConfirmEdit' values: ", values);
 
-
         Axios.put("http://localhost:3001/edit", {
             data: dateToDb,
             titulo: values.titleString,
@@ -107,8 +107,10 @@ const TaskEdit = () => {
                 setErro("erro ao configurar a requisição - contate um administrador!");
                 console.error("--erro requisição:", e.message);
             }
+            
             closeTaskEdit();
         });
+
         closeTaskEdit();
     }
 
@@ -172,6 +174,7 @@ const TaskEdit = () => {
         const dia = data.getDate();
         return dia + 1;
     }
+
     const handleMonth = (props) => {
         const newData = props.slice(0, 10);
 
@@ -187,6 +190,7 @@ const TaskEdit = () => {
     return (
         <C.AddContainer>
             {isTaskConfirmEvent && <ConfirmEvent title='Editar' text='Confirmar edição do registro?' onConfirm={handleConfirmEdit}>
+                
             </ConfirmEvent>}
             <C.TopAddContainer>
                 <C.TopIconsContent>

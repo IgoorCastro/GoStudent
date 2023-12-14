@@ -5,9 +5,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
 import { useCalendarContext } from '../../context/DataContext';
 import Title from '../../components/Title';
+import Help from '../Help';
 
 const TaskWeekly = () => {
     const [weeklyList, setWeeklyList] = useState({});
+    const [helpToggler, setHelpToggler] = useState(false)
     const { isTaskWeeklyVisible } = useCalendarContext();
 
     const nomesDosMeses = [
@@ -93,10 +95,22 @@ const TaskWeekly = () => {
         return mes;
     }
 
+    const closeHelpWithTimer = () => {
+        setTimeout(() => {
+            setHelpToggler(!helpToggler)
+        }, 11500)
+    }
+
+    const toggleHelp = () => {
+        setHelpToggler(!helpToggler)
+    }
+
     return (
         <C.WeeklyContainer>
+            {helpToggler && <Help closeHelpWithTimer={closeHelpWithTimer} toggleHelp={toggleHelp} />}
+            
             <C.TopWeeklyContainer>
-                <C.TopIconContainer>
+                <C.TopIconContainer onClick={() => toggleHelp()}>
                     <C.TopIconContent><FontAwesomeIcon icon={faCircleInfo} /></C.TopIconContent>
                 </C.TopIconContainer>
                 <C.TopAddTitle>

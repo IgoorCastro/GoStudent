@@ -12,7 +12,6 @@ const ConfirmEvent = ({ title = 'title', text = 'text', onConfirm, onCancel }) =
         else
             console.log("--(handleConfirmEvent) erro: nenhuma função encontrada. Use 'onConfirm' como parametro!");
 
-
         // atualiza as cores do calendário
         setCalendarUpdt();
         closeTaskConfirmEvent();

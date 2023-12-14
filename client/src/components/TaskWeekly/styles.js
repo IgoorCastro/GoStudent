@@ -9,6 +9,8 @@ export const WeeklyContainer = styled.div`
     align-items: center;
     justify-content: center;
 
+    position: relative;
+
     //border: 1px solid red;
 `;
 
@@ -51,7 +53,7 @@ export const MainContent = styled.div`
 
     gap: 1.3rem;
 
-    padding: 1px 0;
+    padding: 5px 0;
 
     overflow-y: auto;
 

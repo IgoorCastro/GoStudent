@@ -69,6 +69,7 @@ const Calendario = () => {
             setMesAtual(mesAtual + 1);
         }
     };
+
     // Função do botão prixmo mês
     const mesAnterior = () => {
         if (mesAtual === 1) { //Verifica se o mês atual do calendario é Janeiro
@@ -175,7 +176,6 @@ const Calendario = () => {
                 console.error("--erro requisição:", e.message);
             }
         });
-
     }
 
     const calendarColorControl = (dia, mes, ano) => {
@@ -236,7 +236,7 @@ const Calendario = () => {
     const handlePreviousMonth = () => {
         mesAnterior();
         setCalendarUpdt();
-        // getCalendarColorControl();        
+        // getCalendarColorControl();
     }
 
     const handleNextMonth = () => {
@@ -245,9 +245,8 @@ const Calendario = () => {
         // getCalendarColorControl();
     }
 
-
-
     return (
+
         <C.MainContent>
             <C.CalendarioContainer>
                 <C.TitleContent>

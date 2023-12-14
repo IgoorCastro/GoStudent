@@ -1,6 +1,5 @@
 import styled from "styled-components";
 
-
 export const Button = styled.button`
     width: 65%;
     //min-width: 15rem; 
